@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "76ckEhM+C4WkTDaWNCuaIgPKlZ4crLnKliNb3Xpckp8WX1zS2yl/0UQMyheL8r0gRIxXKRF+OSAAwEAW1HRI2g==",
+  "success": true,
+  "projectFilePath": "F:\\shoppinglist\\Shoppinglist\\Shoppinglist\\Shoppinglist.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\friiq\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.10.9\\microsoft.visualstudio.azure.containers.tools.targets.1.10.9.nupkg.sha512"
+  ],
+  "logs": []
+}
