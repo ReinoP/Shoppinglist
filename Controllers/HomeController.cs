@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Shoppinglist.Models;
-using System;
-using System.Collections.Generic;
+using ShoppinglistApp.Models;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Shoppinglist.Controllers
+namespace ShoppinglistApp.Controllers
 {
     public class HomeController : Controller
     {
@@ -23,10 +19,6 @@ namespace Shoppinglist.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
