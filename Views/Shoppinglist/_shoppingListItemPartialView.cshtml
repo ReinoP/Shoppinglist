@@ -1,0 +1,32 @@
+﻿
+<div>
+	<div id="addedItems">
+
+	</div>
+	<div>
+		<label>Item to add</label>
+		<input id="addMe" />
+		<span class="text-danger"></span>
+	</div>
+	<div>
+		<input type="button" id="addSLI" onclick="addFunction()" value="Add to list" class="btn btn-primary" />
+	</div>
+</div>
+
+
+@section Scripts {
+
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script type="text/javascript" language="javascript">
+  var itemArr = [];
+  function addFunction() {
+    var add = document.getElementById("addMe").value;
+    itemArr.push(add);
+    $("#addedItems").append(add + "<br>");
+    //for (var x = 0; x < itemArr.length; x++) {
+    //   console.log(itemArr[x]);
+    //}
+    //ajax-post to controller or how do i append this list to the model list?
+  }
+</script>
