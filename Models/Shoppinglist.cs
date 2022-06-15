@@ -9,7 +9,7 @@ namespace ShoppinglistApp.Models
 {
   public class Shoppinglist
   {  
-    public string UserName { get; set; }
+    public string UserID { get; set; }
     [Key]
     public int ListID { get; set; }
     public string ListName { get; set; }

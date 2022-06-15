@@ -41,10 +41,27 @@
 
 <script type="text/javascript" language="javascript">
 	var itemArr = [];
+	var counter = 0;
 	function addFunction() {
 		var item = document.getElementById("addMe").value;
 		itemArr.push(item);
-		$("#addedItems").append(item + "<br>");
+		
+		$("#addedItems").append(item + "<a href='javascript: void (0);' onclick='removeItem(" + counter + ");''> remove </a>" + "<br>");
+		counter++;
+		console.table(itemArr);
+
+	}
+	function removeItem(c) {
+		console.log("remove index " + c);
+		itemArr.splice(c, 1);
+		console.table(itemArr);
+		document.getElementById("addedItems").innerHTML  = "";
+		counter = 0;
+	
+		itemArr.forEach((i) => {
+			$("#addedItems").append(i + "<a href='javascript: void (0);' onclick='removeItem(" + counter + ");''> remove </a>" + "<br>");
+			counter++;
+		})
 	}
 
 	function submitForm() {

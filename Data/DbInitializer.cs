@@ -36,8 +36,8 @@ namespace ShoppinglistApp.Data
           listItems.Add(listItem);
         }
         sl.Items = listItems;
-        sl.UserID = u.ID;
-        sl.ListID = u.ID;
+        //sl.UserID = u.ID;
+        //sl.ListID = u.ID;
 
         context.Users.Add(u);
       }
