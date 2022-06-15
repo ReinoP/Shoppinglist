@@ -95,6 +95,7 @@ namespace ShoppinglistApp.Controllers
     [Authorize]
     public async Task<IActionResult> Edit(int? id)
     {
+      Debug.WriteLine("id is " + id);
       if (id == null)
       {
         return NotFound();
