@@ -78,6 +78,7 @@ namespace ShoppinglistApp.Controllers
       var sl = new Shoppinglist();
       sl.ListName = listName;
       sl.Items = slList;
+      sl.UserID = User.Identity.Name;
       //check if user has an existing list of shoppinglists, if so, add, if not, create.
       //TODO should i remove User-class and just use IdentityUser? where to save info about existing lists etc?
 
