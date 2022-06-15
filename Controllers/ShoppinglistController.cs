@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +18,11 @@ namespace ShoppinglistApp.Controllers
   public class ShoppinglistController : Controller
   {
     private readonly ShoppingListContext _context;
+    private readonly UserManager<IdentityUser> _manager;
 
-    public ShoppinglistController(ShoppingListContext context)
+    public ShoppinglistController(ShoppingListContext context, UserManager<IdentityUser> manager)
     {
+        _manager = manager;
         _context = context;
     }
 
@@ -53,7 +56,7 @@ namespace ShoppinglistApp.Controllers
     [Authorize]
     public IActionResult Create()
     {
-      return View();
+      return View(new Shoppinglist());
     }
 
     // POST: Shoppinglist/Create
@@ -62,22 +65,30 @@ namespace ShoppinglistApp.Controllers
     [HttpPost]
     //[ValidateAntiForgeryToken]
     [Authorize]
-    public async Task<JsonResult> Create(string shoppinglist)
+    public async Task<IActionResult> Create(string listName, string shoppinglist)
     {
-      //TODO user id added to shoppinglist here or earlier
-      Debug.WriteLine("IN CONTROLLER " + shoppinglist);
-      //var sl = JsonConvert.DeserializeObject<>(shoppinglist);
 
+			var arr = JsonConvert.DeserializeObject<string[]>(shoppinglist);
+      var slList = new List<ShoppingListItem>();
+      foreach (string s in arr)
+      {
+        var sli = new ShoppingListItem(s);
+        slList.Add(sli);
+      }
+      var sl = new Shoppinglist();
+      sl.ListName = listName;
+      sl.Items = slList;
+      //check if user has an existing list of shoppinglists, if so, add, if not, create.
+      //TODO should i remove User-class and just use IdentityUser? where to save info about existing lists etc?
 
-   //   sl.ListName = sl.ListName;
-			//if (ModelState.IsValid)
-			//{
-			//	_context.Add(shoppinglist);
-			//	await _context.SaveChangesAsync();
-			//	return RedirectToAction(nameof(Index));
-			//}
-			return Json(shoppinglist);
+      if (ModelState.IsValid)
+			{
+				_context.Add(sl);
+				await _context.SaveChangesAsync();
+			}
+			return RedirectToAction(nameof(Index));
     }
+
 
     // GET: Shoppinglist/Edit/5
     [Authorize]

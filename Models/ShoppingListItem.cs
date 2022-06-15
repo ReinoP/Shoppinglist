@@ -11,9 +11,10 @@ namespace ShoppinglistApp.Models
         [Key]
         public string ItemName { get; set;}
 
-        public ShoppingListItem(string itemName)
-        {
-            ItemName = itemName;
-        }
-    }
+		public ShoppingListItem(string itemName)
+		{
+			ItemName = itemName;
+		}
+
+	}
 }

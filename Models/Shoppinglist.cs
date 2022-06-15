@@ -9,8 +9,7 @@ namespace ShoppinglistApp.Models
 {
   public class Shoppinglist
   {  
-    //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int UserID { get; set; }
+    public string UserName { get; set; }
     [Key]
     public int ListID { get; set; }
     public string ListName { get; set; }
