@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 namespace ShoppinglistApp.Models
 {
   public class Shoppinglist
-  {  
-    public string UserID { get; set; }
+  {
     [Key]
-    public int ListID { get; set; }
+    public int Id { get; set; }
+    public string UserID { get; set; }
+   
+    public Guid ListID { get; set; }
     public string ListName { get; set; }
 
-    public ICollection<ShoppingListItem> Items { get; set; }
-    public ICollection<User> AllowedUsers { get; set; }
   }
 }

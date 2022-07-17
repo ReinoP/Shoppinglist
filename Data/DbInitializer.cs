@@ -29,13 +29,13 @@ namespace ShoppinglistApp.Data
       {
         var sl = new Shoppinglist();
         sl.ListName = u.FirstName + u.LastName+"List";
-        var listItems = new List<ShoppingListItem>();
-        for (int i = 0; i < 5; i++)
-        {
-          var listItem = new ShoppingListItem("item " + i);
-          listItems.Add(listItem);
-        }
-        sl.Items = listItems;
+        //var listItems = new List<ShoppingListItem>();
+        //for (int i = 0; i < 5; i++)
+        //{
+        //  var listItem = new ShoppingListItem("item " + i);
+        //  listItems.Add(listItem);
+        //}
+        //sl.Items = listItems;
         //sl.UserID = u.ID;
         //sl.ListID = u.ID;
 

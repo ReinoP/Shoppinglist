@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoppinglistApp.Data;
 
-namespace ShoppinglistApp.Migrations
+namespace ShoppinglistApp.Migrations.UserDb
 {
     [DbContext(typeof(UserDbContext))]
     partial class UserDbContextModelSnapshot : ModelSnapshot

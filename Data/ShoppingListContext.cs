@@ -11,13 +11,21 @@ namespace ShoppinglistApp.Data
 
     public DbSet<User> Users { get; set; }
     public DbSet<Shoppinglist> Shoppinglists { get; set; }
+    public DbSet<ShoppingListItem> ShoppingListItems { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-      modelBuilder.Entity<User>().ToTable("User");
-      modelBuilder.Entity<Shoppinglist>().ToTable("Shoppinglist");
+      modelBuilder.Entity<User>().ToTable("Users");
+      modelBuilder.Entity<Shoppinglist>().ToTable("Shoppinglists");
+      modelBuilder.Entity<ShoppingListItem>().ToTable("ShoppingListItems");
+
       modelBuilder.Entity<Shoppinglist>()
-                .Property(b => b.ListID)
-                .ValueGeneratedOnAdd();
+            .Property(f => f.Id)
+            .ValueGeneratedOnAdd();
+      modelBuilder.Entity<ShoppingListItem>()
+          .Property(f => f.Id)
+          .ValueGeneratedOnAdd();
+
     }
   }
 }

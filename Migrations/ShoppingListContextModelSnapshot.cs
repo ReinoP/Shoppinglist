@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoppinglistApp.Data;
 
-namespace ShoppinglistApp.Migrations.ShoppingList
+namespace ShoppinglistApp.Migrations
 {
     [DbContext(typeof(ShoppingListContext))]
     partial class ShoppingListContextModelSnapshot : ModelSnapshot
@@ -21,25 +21,36 @@ namespace ShoppinglistApp.Migrations.ShoppingList
 
             modelBuilder.Entity("ShoppinglistApp.Models.ShoppingListItem", b =>
                 {
-                    b.Property<string>("ItemName")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ShoppinglistListID")
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ListId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("ShoppingListItemId")
                         .HasColumnType("int");
 
-                    b.HasKey("ItemName");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ShoppinglistListID");
+                    b.HasIndex("ShoppingListItemId");
 
-                    b.ToTable("ShoppingListItem");
+                    b.ToTable("ShoppingListItems");
                 });
 
             modelBuilder.Entity("ShoppinglistApp.Models.Shoppinglist", b =>
                 {
-                    b.Property<int>("ListID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("ListID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ListName")
                         .HasColumnType("nvarchar(max)");
@@ -47,9 +58,14 @@ namespace ShoppinglistApp.Migrations.ShoppingList
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ListID");
+                    b.Property<int?>("UserID1")
+                        .HasColumnType("int");
 
-                    b.ToTable("Shoppinglist");
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserID1");
+
+                    b.ToTable("Shoppinglists");
                 });
 
             modelBuilder.Entity("ShoppinglistApp.Models.User", b =>
@@ -73,49 +89,31 @@ namespace ShoppinglistApp.Migrations.ShoppingList
 
                     b.HasKey("ID");
 
-                    b.ToTable("User");
-                });
-
-            modelBuilder.Entity("ShoppinglistUser", b =>
-                {
-                    b.Property<int>("AllowedUsersID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ShoppinglistsListID")
-                        .HasColumnType("int");
-
-                    b.HasKey("AllowedUsersID", "ShoppinglistsListID");
-
-                    b.HasIndex("ShoppinglistsListID");
-
-                    b.ToTable("ShoppinglistUser");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ShoppinglistApp.Models.ShoppingListItem", b =>
                 {
-                    b.HasOne("ShoppinglistApp.Models.Shoppinglist", null)
-                        .WithMany("Items")
-                        .HasForeignKey("ShoppinglistListID");
-                });
-
-            modelBuilder.Entity("ShoppinglistUser", b =>
-                {
-                    b.HasOne("ShoppinglistApp.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("AllowedUsersID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShoppinglistApp.Models.Shoppinglist", null)
-                        .WithMany()
-                        .HasForeignKey("ShoppinglistsListID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("ShoppinglistApp.Models.ShoppingListItem", null)
+                        .WithMany("items")
+                        .HasForeignKey("ShoppingListItemId");
                 });
 
             modelBuilder.Entity("ShoppinglistApp.Models.Shoppinglist", b =>
                 {
-                    b.Navigation("Items");
+                    b.HasOne("ShoppinglistApp.Models.User", null)
+                        .WithMany("Shoppinglists")
+                        .HasForeignKey("UserID1");
+                });
+
+            modelBuilder.Entity("ShoppinglistApp.Models.ShoppingListItem", b =>
+                {
+                    b.Navigation("items");
+                });
+
+            modelBuilder.Entity("ShoppinglistApp.Models.User", b =>
+                {
+                    b.Navigation("Shoppinglists");
                 });
 #pragma warning restore 612, 618
         }

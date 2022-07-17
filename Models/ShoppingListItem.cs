@@ -8,13 +8,13 @@ namespace ShoppinglistApp.Models
 {
     public class ShoppingListItem
     {
-        [Key]
-        public string ItemName { get; set;}
+      [Key]
+      public int Id { get; set; }
+      public Guid ListId { get; set; }
 
-		public ShoppingListItem(string itemName)
-		{
-			ItemName = itemName;
-		}
+      public string ItemName { get; set;}
 
-	}
+      public List<ShoppingListItem> items { get; set; }
+
+  }
 }
