@@ -1,7 +1,7 @@
-﻿@model ShoppinglistApp.Models.Shoppinglist
+﻿@model ShoppinglistApp.Models.ShoppingListViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+	ViewData["Title"] = "Edit";
 }
 
 <h1>Edit</h1>
@@ -9,31 +9,76 @@
 <h4>Shoppinglist</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="UserID" />
-            <div class="form-group">
-                <label asp-for="ListID" class="control-label"></label>
-                <input asp-for="ListID" class="form-control" />
-                <span asp-validation-for="ListID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ListName" class="control-label"></label>
-                <input asp-for="ListName" class="form-control" />
-                <span asp-validation-for="ListName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="UserID" />
+			<div class="form-group">
+				<label asp-for="ListName" class="control-label"></label>
+				<input asp-for="ListName" class="form-control" />
+				<span asp-validation-for="ListName" class="text-danger"></span>
+			</div>
+			<div class="form-group" id="listItems">
+				<span>Items on the shoppinglist</span>
+				@foreach (ShoppinglistApp.Models.ShoppingListItem i in Model.Items)
+				{
+					<input type="text" id="listItem" value=@Html.Raw(i.ItemName) />
+				}
+
+			</div>
+			<div class="form-group">
+				<input type="button" value="Save" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+	<a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script type="text/javascript" language="javascript">
+	//TODO modify these functions to work in Edit
+
+	var itemArr = [];
+	var counter = 0;
+	function addFunction() {
+		var item = document.getElementById("addMe").value;
+		itemArr.push(item);
+
+		$("#addedItems").append(item + "<a href='javascript: void (0);' onclick='removeItem(" + counter + ");''> remove </a>" + "<br>");
+		counter++;
+		console.table(itemArr);
+
+	}
+	function removeItem(c) {
+		console.log("remove index " + c);
+		itemArr.splice(c, 1);
+		console.table(itemArr);
+		document.getElementById("addedItems").innerHTML  = "";
+		counter = 0;
+
+		itemArr.forEach((i) => {
+			$("#addedItems").append(i + "<a href='javascript: void (0);' onclick='removeItem(" + counter + ");''> remove </a>" + "<br>");
+			counter++;
+		})
+	}
+
+	function submitForm() {
+		$.ajax({
+			type: "POST",
+			url: '/Shoppinglist/Edit',
+			data: { listname: document.getElementById("listName").value, shoppinglist: JSON.stringify(itemArr)},
+			success: function (data) {
+				alert("Success");
+			},
+			failure: function (errMsg) {
+				alert(errMsg);
+			}
+		});
+	}
+</script>

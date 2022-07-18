@@ -83,14 +83,12 @@ namespace ShoppinglistApp.Controllers
         sli.ListId = id;
         _context.ShoppingListItems.Add(sli);
 			}
-      //await _context.SaveChangesAsync();
 
       var sl = new Shoppinglist();
 			sl.ListName = listName;
       sl.ListID = id;
 			sl.UserID = User.Identity.Name;
      
-      //TODO error, can only track 1 entity.
 
 			//check if user has an existing list of shoppinglists, if so, add, if not, create.
 			//TODO should i remove User-class and just use IdentityUser? where to save info about existing lists etc?
@@ -107,20 +105,27 @@ namespace ShoppinglistApp.Controllers
 
     // GET: Shoppinglist/Edit/5
     [Authorize]
-    public async Task<IActionResult> Edit(int? id)
+    public async Task<IActionResult> Edit(Guid? id)
     {
-      Debug.WriteLine("id is " + id);
       if (id == null)
       {
         return NotFound();
       }
 
-      var shoppinglist = await _context.Shoppinglists.FindAsync(id);
+      var shoppinglist = await _context.Shoppinglists
+          .FirstOrDefaultAsync(m => m.ListID == id);
+      List<ShoppingListItem> items = await _context.ShoppingListItems.Where(m => m.ListId == id).ToListAsync();
+      var list = new ShoppingListViewModel();
+      list.Items = items;
+      list.ListID = shoppinglist.ListID;
+      list.ListName = shoppinglist.ListName;
+      list.UserID = shoppinglist.UserID;
       if (shoppinglist == null)
       {
         return NotFound();
       }
-      return View(shoppinglist);
+
+      return View(list);
     }
 
     // POST: Shoppinglist/Edit/5
