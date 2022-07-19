@@ -13,101 +13,101 @@ using System.Threading.Tasks;
 namespace ShoppinglistApp.Controllers
 {
 
-  public class AccountController:Controller
+	public class AccountController : Controller
 	{
-    private readonly ShoppingListContext _context;
-    public AccountController(ShoppingListContext context)
-    {
-     this._context = context;
-    }
+		private readonly ShoppingListContext _context;
+		public AccountController(ShoppingListContext context)
+		{
+			this._context = context;
+		}
 
-    [HttpGet]
-    public IActionResult Register(string returnUrl = null)
-    {
-      ViewData["ReturnUrl"] = returnUrl;
-      return View();
-    }
+		[HttpGet]
+		public IActionResult Register(string returnUrl = null)
+		{
+			ViewData["ReturnUrl"] = returnUrl;
+			return View();
+		}
 
-    [HttpPost]
-    public async Task<IActionResult> Register(string firstName, string lastName, string password, string returnUrl = null)
-    {
+		[HttpPost]
+		public async Task<IActionResult> Register(string firstName, string lastName, string password, string returnUrl = null)
+		{
 
-      var user = new User();
-      user.FirstName = firstName;
-      user.LastName = lastName;
-      user.RegisterDate = new DateTime();
-      //user.Password = password;
- 
+			var user = new User();
+			user.FirstName = firstName;
+			user.LastName = lastName;
+			user.RegisterDate = new DateTime();
+			//user.Password = password;
 
-      if (ModelState.IsValid)
-      {
-        try
-        {
-          _context.Users.Add(user);
-          await _context.SaveChangesAsync();
-        }
-        catch (DbException)
-        {
-          throw;
-        }
-        //return RedirectToAction(nameof(Index));
-      }
-      else
+
+			if (ModelState.IsValid)
 			{
-        Debug.WriteLine("not valid");
+				try
+				{
+					_context.Users.Add(user);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbException)
+				{
+					throw;
+				}
+				//return RedirectToAction(nameof(Index));
 			}
-      var userList = new List<User>();
-      userList = _context.Users.ToList();
-      return RedirectToAction(nameof(Index));
-    }
+			else
+			{
+				Debug.WriteLine("not valid");
+			}
+			var userList = new List<User>();
+			userList = _context.Users.ToList();
+			return RedirectToAction(nameof(Index));
+		}
 
-      [HttpGet]
+		[HttpGet]
 		public IActionResult Login(string returnUrl = null)
 		{
 			ViewData["ReturnUrl"] = returnUrl;
 			return View();
 		}
-    private bool ValidateLogin(string userName, string password)
-    {
-      // For this sample, all logins are successful.
-      return true;
-    }
+		private bool ValidateLogin(string userName, string password)
+		{
+			// For this sample, all logins are successful.
+			return true;
+		}
 
-    [HttpPost]
-    public async Task<IActionResult> Login(string userName, string password, string returnUrl = null)
-    {
-      ViewData["ReturnUrl"] = returnUrl;
+		[HttpPost]
+		public async Task<IActionResult> Login(string userName, string password, string returnUrl = null)
+		{
+			ViewData["ReturnUrl"] = returnUrl;
 
-      // Normally Identity handles sign in, but you can do it directly
-      //if (ValidateLogin(userName, password))
-      //{
-      //  var claims = new List<Claim>
-      //      {
-      //          new Claim("user", userName),
-      //          new Claim("role", "Member")
-      //      };
+			// Normally Identity handles sign in, but you can do it directly
+			//if (ValidateLogin(userName, password))
+			//{
+			//  var claims = new List<Claim>
+			//      {
+			//          new Claim("user", userName),
+			//          new Claim("role", "Member")
+			//      };
 
-      //  await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "role")));
+			//  await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "role")));
 
-      //  if (Url.IsLocalUrl(returnUrl))
-      //  {
-      //    return Redirect(returnUrl);
-      //  }
-      //  else
-      //  {
-      //    return Redirect("/");
-      //  }
-      //}
+			//  if (Url.IsLocalUrl(returnUrl))
+			//  {
+			//    return Redirect(returnUrl);
+			//  }
+			//  else
+			//  {
+			//    return Redirect("/");
+			//  }
+			//}
 
-      return View();
-    }
+			return View();
+		}
 
 
-    public async Task<IActionResult> Logout()
-    {
-      await HttpContext.SignOutAsync();
-      return Redirect("/");
-    }
-  }
+		public async Task<IActionResult> Logout()
+		{
+			await HttpContext.SignOutAsync();
+			return Redirect("/");
+		}
+	}
 
 }

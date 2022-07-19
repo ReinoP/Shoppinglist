@@ -19,14 +19,14 @@
 	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 <script type="text/javascript" language="javascript">
-  var itemArr = [];
-  function addFunction() {
-    var add = document.getElementById("addMe").value;
-    itemArr.push(add);
-    $("#addedItems").append(add + "<br>");
-    //for (var x = 0; x < itemArr.length; x++) {
-    //   console.log(itemArr[x]);
-    //}
-    //ajax-post to controller or how do i append this list to the model list?
-  }
+	var itemArr = [];
+	function addFunction() {
+		var add = document.getElementById("addMe").value;
+		itemArr.push(add);
+		$("#addedItems").append(add + "<br>");
+		//for (var x = 0; x < itemArr.length; x++) {
+		//   console.log(itemArr[x]);
+		//}
+		//ajax-post to controller or how do i append this list to the model list?
+	}
 </script>

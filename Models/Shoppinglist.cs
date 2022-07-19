@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace ShoppinglistApp.Models
 {
-  public class Shoppinglist
-  {
-    [Key]
-    public int Id { get; set; }
-    public string UserID { get; set; }
-   
-    public Guid ListID { get; set; }
-    public string ListName { get; set; }
+	public class Shoppinglist
+	{
+		[Key]
+		public int Id { get; set; }
+		public string UserID { get; set; }
 
-  }
+		public Guid ListID { get; set; }
+		public string ListName { get; set; }
+
+	}
 }

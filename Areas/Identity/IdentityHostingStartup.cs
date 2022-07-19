@@ -10,12 +10,13 @@ using ShoppinglistApp.Data;
 [assembly: HostingStartup(typeof(ShoppinglistApp.Areas.Identity.IdentityHostingStartup))]
 namespace ShoppinglistApp.Areas.Identity
 {
-    public class IdentityHostingStartup : IHostingStartup
-    {
-        public void Configure(IWebHostBuilder builder)
-        {
-            builder.ConfigureServices((context, services) => {
-            });
-        }
-    }
+	public class IdentityHostingStartup : IHostingStartup
+	{
+		public void Configure(IWebHostBuilder builder)
+		{
+			builder.ConfigureServices((context, services) =>
+			{
+			});
+		}
+	}
 }
