@@ -41,11 +41,12 @@
 	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
 	<script type="text/javascript" language="javascript">
-		//TODO modify these functions to work in Edit
+
 		var items = @Html.Raw(Json.Serialize(Model.Items));
 		var id = '@Html.Raw(Model.ListID)';
-		console.log(id);
+
 		var itemArr = [];
 		for(var i = 0; i < items.length; i++ ) {
 			var item = items[i];
@@ -66,9 +67,8 @@
 
 			$("#listItems").append('<input type="text" id="listItem" value='+item+' />' + "<a href='javascript: void (0);' onclick='removeItem(" + counter + ");''> remove </a>" + "<br>");
 			counter++;
-			console.table(itemArr);
-
 		}
+
 		function removeItem(c) {
 			console.log("remove index " + c);
 			itemArr.splice(c, 1);
