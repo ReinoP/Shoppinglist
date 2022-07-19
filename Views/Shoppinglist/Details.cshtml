@@ -22,19 +22,18 @@
 			<dd class="col-sm-10">
 				@Html.DisplayFor(model => model.ListName)
 			</dd>
-
 		</dl>
 
 		<dl class="col-md">
 			<dt class="col-sm-5">
 				<span>List items</span>
-		</dt>
+			</dt>
 			@foreach (ShoppinglistApp.Models.ShoppingListItem i in Model.Items)
 			{
-			<dd class="col-sm-10">
-				@Html.Raw(i.ItemName)
-			</dd>
-		}
+				<dd class="col-sm-10">
+					@Html.Raw(i.ItemName)
+				</dd>
+			}
 		</dl>
 	</div>
 </div>

@@ -133,34 +133,39 @@ namespace ShoppinglistApp.Controllers
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Edit(Guid id, [Bind("ListID,ListName")] Shoppinglist shoppinglist)
+    public async Task<IActionResult> Edit(string listName, string listId, string shoppinglist)
     {
-      if (id != shoppinglist.ListID)
-      {
-          return NotFound();
-      }
+      Debug.WriteLine("id :", listId);
+      Debug.WriteLine("name :", listName);
 
-      if (ModelState.IsValid)
-      {
-        try
-        {
-          _context.Update(shoppinglist);
-          await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-          if (!ShoppinglistExists(shoppinglist.ListID))
-          {
-             return NotFound();
-          }
-          else
-          {
-             throw;
-          }
-        }
+      Debug.WriteLine("list :", shoppinglist);
+
+      //if (id != shoppinglist.ListID)
+      //{
+      //    return NotFound();
+      //}
+
+      //if (ModelState.IsValid)
+      //{
+      //  try
+      //  {
+      //    _context.Update(shoppinglist);
+      //    await _context.SaveChangesAsync();
+      //  }
+      //  catch (DbUpdateConcurrencyException)
+      //  {
+      //    if (!ShoppinglistExists(shoppinglist.ListID))
+      //    {
+      //       return NotFound();
+      //    }
+      //    else
+      //    {
+      //       throw;
+      //    }
+      //  }
         return RedirectToAction(nameof(Index));
-      }
-      return View(shoppinglist);
+      //}
+      //return View(shoppinglist);
     }
 
     // GET: Shoppinglist/Delete/5

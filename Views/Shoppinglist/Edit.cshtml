@@ -2,6 +2,7 @@
 
 @{
 	ViewData["Title"] = "Edit";
+
 }
 
 <h1>Edit</h1>
@@ -14,20 +15,19 @@
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<input type="hidden" asp-for="UserID" />
 			<div class="form-group">
-				<label asp-for="ListName" class="control-label"></label>
+				<label asp-for="ListName" id="listId" class="control-label"></label>
 				<input asp-for="ListName" class="form-control" />
 				<span asp-validation-for="ListName" class="text-danger"></span>
 			</div>
 			<div class="form-group" id="listItems">
 				<span>Items on the shoppinglist</span>
-				@foreach (ShoppinglistApp.Models.ShoppingListItem i in Model.Items)
-				{
-					<input type="text" id="listItem" value=@Html.Raw(i.ItemName) />
-				}
 
 			</div>
+			<span class="control-label">Add item to list</span> <br />
+			<input id="addMe"  />
+			<input type="button" id="addSLI" onclick="addItem()" value="Add" class="btn btn-primary" />
 			<div class="form-group">
-				<input type="button" value="Save" class="btn btn-primary" />
+				<input type="button" value="Save" onclick="submitForm()"  class="btn btn-primary" />
 			</div>
 		</form>
 	</div>
@@ -39,46 +39,61 @@
 
 @section Scripts {
 	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
 
-<script type="text/javascript" language="javascript">
-	//TODO modify these functions to work in Edit
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script type="text/javascript" language="javascript">
+		//TODO modify these functions to work in Edit
+		var items = @Html.Raw(Json.Serialize(Model.Items));
+		var id = '@Html.Raw(Model.ListID)';
+		console.log(id);
+		var itemArr = [];
+		for(var i = 0; i < items.length; i++ ) {
+			var item = items[i];
+			itemArr.push(item.itemName);
+		};
+		var counter = 0;
 
-	var itemArr = [];
-	var counter = 0;
-	function addFunction() {
-		var item = document.getElementById("addMe").value;
-		itemArr.push(item);
-
-		$("#addedItems").append(item + "<a href='javascript: void (0);' onclick='removeItem(" + counter + ");''> remove </a>" + "<br>");
-		counter++;
-		console.table(itemArr);
-
-	}
-	function removeItem(c) {
-		console.log("remove index " + c);
-		itemArr.splice(c, 1);
-		console.table(itemArr);
-		document.getElementById("addedItems").innerHTML  = "";
-		counter = 0;
-
-		itemArr.forEach((i) => {
-			$("#addedItems").append(i + "<a href='javascript: void (0);' onclick='removeItem(" + counter + ");''> remove </a>" + "<br>");
-			counter++;
+		$(document).ready(function () {
+			itemArr.forEach((i) => {
+				$("#listItems").append('<input type="text" id="listItem" value=' + i + ' />' + "<a href='javascript: void (0);' onclick='removeItem(" + counter + ");''> remove </a>" + "<br>");
+				counter++;
+			});
 		})
-	}
 
-	function submitForm() {
-		$.ajax({
-			type: "POST",
-			url: '/Shoppinglist/Edit',
-			data: { listname: document.getElementById("listName").value, shoppinglist: JSON.stringify(itemArr)},
-			success: function (data) {
-				alert("Success");
-			},
-			failure: function (errMsg) {
-				alert(errMsg);
-			}
-		});
-	}
-</script>
+		function addItem() {
+			var item = document.getElementById("addMe").value;
+			itemArr.push(item);
+
+			$("#listItems").append('<input type="text" id="listItem" value='+item+' />' + "<a href='javascript: void (0);' onclick='removeItem(" + counter + ");''> remove </a>" + "<br>");
+			counter++;
+			console.table(itemArr);
+
+		}
+		function removeItem(c) {
+			console.log("remove index " + c);
+			itemArr.splice(c, 1);
+			console.table(itemArr);
+			document.getElementById("listItems").innerHTML  = "";
+			counter = 0;
+
+			itemArr.forEach((i) => {
+				$("#listItems").append('<input type="text" id="listItem" value=' + i + ' />' + "<a href='javascript: void (0);' onclick='removeItem(" + counter + ");''> remove </a>" + "<br>");
+				counter++;
+			})
+		}
+
+		function submitForm() {
+			$.ajax({
+				type: "POST",
+				url: '/Shoppinglist/Edit',
+				data: { listName: document.getElementById("ListName").value, listId: id, shoppinglist: JSON.stringify(itemArr) },
+				success: function (data) {
+					alert("Success");
+				},
+				failure: function (errMsg) {
+					alert(errMsg);
+				}
+			});
+		}
+	</script>
+}
