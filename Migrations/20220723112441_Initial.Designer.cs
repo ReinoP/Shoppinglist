@@ -10,7 +10,7 @@ using ShoppinglistApp.Data;
 namespace ShoppinglistApp.Migrations
 {
     [DbContext(typeof(ShoppingListContext))]
-    [Migration("20220723110152_Initial")]
+    [Migration("20220723112441_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,7 +70,7 @@ namespace ShoppinglistApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ShoppinglistApp.Models.ShoppingListItem", b =>

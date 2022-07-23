@@ -16,7 +16,7 @@ namespace ShoppinglistApp.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<IdentityUser>().ToTable("AspNetUsers");
+			//modelBuilder.Entity<IdentityUser>().ToTable("AspNetUsers");
 			modelBuilder.Entity<Shoppinglist>().ToTable("Shoppinglists");
 			modelBuilder.Entity<ShoppingListItem>().ToTable("ShoppingListItems");
 

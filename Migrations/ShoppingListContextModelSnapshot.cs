@@ -68,7 +68,7 @@ namespace ShoppinglistApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ShoppinglistApp.Models.ShoppingListItem", b =>

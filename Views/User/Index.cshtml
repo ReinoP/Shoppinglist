@@ -5,26 +5,20 @@
 
 <div class="text-center">
 	<div class="jumbotron">
-		<h1>The default view for users</h1>
+		<h2>Share your lists!</h2>
 	</div>
 	<div class="row">
 		<div class="col-md-4">
-			<h2>Instructions</h2>
+			<h3>Instructions</h3>
 			<p>
 				How to manage your shopping lists instructions here.
 			</p>
 		</div>
 		<div class="col-md-4">
-			<h2>List of users you can share your list with</h2>
+			<h3>List of users you can share your list with</h3>
 			@foreach (var item in Model.userList)
 			{
-				<span>@Html.DisplayFor(modelItem => item.Email)</span><br />
-
-				@*<td>
-				<a asp-action="Edit" asp-route-id="@item.ListID">Edit</a> |
-				<a asp-action="Details" asp-route-id="@item.ListID">Details</a> |
-				<a asp-action="Delete" asp-route-id="@item.ListID">Delete</a>
-			</td>*@
+				<span>@Html.DisplayFor(modelItem => item.Email)</span> <a asp-action="Share" asp-route-id="@item.Id">Share</a><br />
 			}
 
 		</div>
