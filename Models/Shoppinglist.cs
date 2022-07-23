@@ -13,7 +13,7 @@ namespace ShoppinglistApp.Models
 		public int Id { get; set; }
 		public string UserID { get; set; }
 
-		public Guid ListID { get; set; }
+		public string ListID { get; set; }
 		public string ListName { get; set; }
 
 	}

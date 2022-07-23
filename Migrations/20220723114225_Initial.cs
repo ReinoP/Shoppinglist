@@ -13,7 +13,7 @@ namespace ShoppinglistApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ListId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ListId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ItemName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShoppingListItemId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -35,7 +35,7 @@ namespace ShoppinglistApp.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ListID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ListID = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ListName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>

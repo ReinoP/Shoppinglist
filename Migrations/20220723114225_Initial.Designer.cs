@@ -10,7 +10,7 @@ using ShoppinglistApp.Data;
 namespace ShoppinglistApp.Migrations
 {
     [DbContext(typeof(ShoppingListContext))]
-    [Migration("20220723112441_Initial")]
+    [Migration("20220723114225_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,8 +83,8 @@ namespace ShoppinglistApp.Migrations
                     b.Property<string>("ItemName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ListId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ListId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ShoppingListItemId")
                         .HasColumnType("int");
@@ -103,8 +103,8 @@ namespace ShoppinglistApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("ListID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ListID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ListName")
                         .HasColumnType("nvarchar(max)");

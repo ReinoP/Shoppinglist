@@ -30,12 +30,17 @@ namespace ShoppinglistApp.Controllers
 		[Authorize]
 		public async Task<IActionResult> Index()
 		{
-			return View(await _context.Shoppinglists.ToListAsync());
+			List<Shoppinglist> list;
+			var userId = _manager.GetUserId(User);
+			list = await _context.Shoppinglists.Where(u => u.ListID == userId).ToListAsync();
+
+
+			return View(list);
 		}
 
 		// GET: Shoppinglist/Details/5
 		[Authorize]
-		public async Task<IActionResult> Details(Guid? id)
+		public async Task<IActionResult> Details(string? id)
 		{
 			if (id == null)
 			{
@@ -75,18 +80,19 @@ namespace ShoppinglistApp.Controllers
 		{
 
 			var arr = JsonConvert.DeserializeObject<string[]>(shoppinglist);
-			Guid id = Guid.NewGuid();
+			var userId = _manager.GetUserId(User);
+			;
 			foreach (string s in arr)
 			{
 				var sli = new ShoppingListItem();
 				sli.ItemName = s;
-				sli.ListId = id;
+				sli.ListId = userId;
 				_context.ShoppingListItems.Add(sli);
 			}
 
 			var sl = new Shoppinglist();
 			sl.ListName = listName;
-			sl.ListID = id;
+			sl.ListID = userId;
 			sl.UserID = User.Identity.Name;
 
 
@@ -105,7 +111,7 @@ namespace ShoppinglistApp.Controllers
 
 		// GET: Shoppinglist/Edit/5
 		[Authorize]
-		public async Task<IActionResult> Edit(Guid? id)
+		public async Task<IActionResult> Edit(string? id)
 		{
 			if (id == null)
 			{
@@ -137,10 +143,10 @@ namespace ShoppinglistApp.Controllers
 		{
 			var arr = JsonConvert.DeserializeObject<string[]>(shoppinglist);
 			var sl = await _context.Shoppinglists
-						.FirstOrDefaultAsync(s => s.ListID == new Guid(listId));
+						.FirstOrDefaultAsync(s => s.ListID == listId);
 			sl.ListName = listName;
 			//this is most likely a bad way of saving/modifying/editing shopping list items...
-			List<ShoppingListItem> items = await _context.ShoppingListItems.Where(i => i.ListId == new Guid(listId)).ToListAsync();
+			List<ShoppingListItem> items = await _context.ShoppingListItems.Where(i => i.ListId == listId).ToListAsync();
 			foreach (ShoppingListItem item in items)
 			{
 				_context.ShoppingListItems.Remove(item);
@@ -150,7 +156,7 @@ namespace ShoppinglistApp.Controllers
 			{
 				var sli = new ShoppingListItem();
 				sli.ItemName = s;
-				sli.ListId = new Guid(listId);
+				sli.ListId = listId;
 				_context.ShoppingListItems.Add(sli);
 			}
 
@@ -179,7 +185,7 @@ namespace ShoppinglistApp.Controllers
 
 		// GET: Shoppinglist/Delete/5
 		[Authorize]
-		public async Task<IActionResult> Delete(Guid? id)
+		public async Task<IActionResult> Delete(string? id)
 		{
 			if (id == null)
 			{
@@ -198,7 +204,7 @@ namespace ShoppinglistApp.Controllers
 		// POST: Shoppinglist/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[Authorize]
-		public async Task<IActionResult> DeleteConfirmed(Guid id)
+		public async Task<IActionResult> DeleteConfirmed(string id)
 		{
 			var shoppinglist = await _context.Shoppinglists.FindAsync(id);
 			_context.Shoppinglists.Remove(shoppinglist);
@@ -206,7 +212,7 @@ namespace ShoppinglistApp.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 		[Authorize]
-		private bool ShoppinglistExists(Guid id)
+		private bool ShoppinglistExists(string id)
 		{
 			return _context.Shoppinglists.Any(e => e.ListID == id);
 		}
