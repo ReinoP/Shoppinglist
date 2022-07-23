@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,27 +14,33 @@ namespace ShoppinglistApp.Controllers
 	public class UserController : Controller
 	{
 		private readonly ShoppingListContext _context;
+		private readonly UserDbContext _userContext;
 
-		public UserController(ShoppingListContext context)
-		{
+
+		public UserController(ShoppingListContext context, UserDbContext ucontext)
+		{	
 			_context = context;
+			_userContext = ucontext;
 		}
 
 		// GET: Users
 		public async Task<IActionResult> Index()
 		{
-			return View(await _context.Users.ToListAsync());
+			UserListView list = new UserListView();
+			list.userList = await _userContext.Users.ToListAsync();
+
+			return View(list);
 		}
 
 		// GET: Users/Details/5
-		public async Task<IActionResult> Details(int? id)
+		public async Task<IActionResult> Details(string? id)
 		{
 			if (id == null)
 			{
 				return NotFound();
 			}
 
-			var user = await _context.Users.FirstOrDefaultAsync(m => m.ID == id);
+			var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
 			if (user == null)
 			{
 				return NotFound();
@@ -53,7 +60,7 @@ namespace ShoppinglistApp.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("ID,LastName,FirstName,RegisterDate")] User user)
+		public async Task<IActionResult> Create([Bind("ID,LastName,FirstName,RegisterDate")] IdentityUser user)
 		{
 			if (ModelState.IsValid)
 			{
@@ -85,9 +92,9 @@ namespace ShoppinglistApp.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("ID,LastName,FirstName,RegisterDate")] User user)
+		public async Task<IActionResult> Edit(string id, IdentityUser user)
 		{
-			if (id != user.ID)
+			if (id != user.Id)
 			{
 				return NotFound();
 			}
@@ -101,7 +108,7 @@ namespace ShoppinglistApp.Controllers
 				}
 				catch (DbUpdateConcurrencyException)
 				{
-					if (!UserExists(user.ID))
+					if (!UserExists(user.Id))
 					{
 						return NotFound();
 					}
@@ -116,14 +123,14 @@ namespace ShoppinglistApp.Controllers
 		}
 
 		// GET: Users/Delete/5
-		public async Task<IActionResult> Delete(int? id)
+		public async Task<IActionResult> Delete(string? id)
 		{
 			if (id == null)
 			{
 				return NotFound();
 			}
 
-			var user = await _context.Users.FirstOrDefaultAsync(m => m.ID == id);
+			var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
 			if (user == null)
 			{
 				return NotFound();
@@ -143,9 +150,9 @@ namespace ShoppinglistApp.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		private bool UserExists(int id)
+		private bool UserExists(string id)
 		{
-			return _context.Users.Any(e => e.ID == id);
+			return _context.Users.Any(e => e.Id == id);
 		}
 	}
 }

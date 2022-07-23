@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ShoppinglistApp.Models;
 
 namespace ShoppinglistApp.Data
@@ -9,13 +10,13 @@ namespace ShoppinglistApp.Data
 		{
 		}
 
-		public DbSet<User> Users { get; set; }
+		public DbSet<IdentityUser> Users { get; set; }
 		public DbSet<Shoppinglist> Shoppinglists { get; set; }
 		public DbSet<ShoppingListItem> ShoppingListItems { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<User>().ToTable("Users");
+			modelBuilder.Entity<IdentityUser>().ToTable("AspNetUsers");
 			modelBuilder.Entity<Shoppinglist>().ToTable("Shoppinglists");
 			modelBuilder.Entity<ShoppingListItem>().ToTable("ShoppingListItems");
 

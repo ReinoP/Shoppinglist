@@ -26,7 +26,7 @@ namespace ShoppinglistApp
 			var services = scope.ServiceProvider;
 			try
 			{
-				var context = services.GetRequiredService<ShoppingListContext>();
+				var context = services.GetRequiredService<UserDbContext>();
 				DbInitializer.Initialize(context);
 			}
 			catch (Exception ex)

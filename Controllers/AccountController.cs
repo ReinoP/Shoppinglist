@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoppinglistApp.Data;
 using ShoppinglistApp.Models;
@@ -29,13 +30,13 @@ namespace ShoppinglistApp.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Register(string firstName, string lastName, string password, string returnUrl = null)
+		public async Task<IActionResult> Register(string userName, string email, string password, string returnUrl = null)
 		{
 
-			var user = new User();
-			user.FirstName = firstName;
-			user.LastName = lastName;
-			user.RegisterDate = new DateTime();
+			var user = new IdentityUser();
+			user.Email = email;
+			user.UserName = userName;
+			//user.RegisterDate = new DateTime();
 			//user.Password = password;
 
 
@@ -56,7 +57,7 @@ namespace ShoppinglistApp.Controllers
 			{
 				Debug.WriteLine("not valid");
 			}
-			var userList = new List<User>();
+			var userList = new List<IdentityUser>();
 			userList = _context.Users.ToList();
 			return RedirectToAction(nameof(Index));
 		}

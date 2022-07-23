@@ -10,8 +10,8 @@ using ShoppinglistApp.Data;
 namespace ShoppinglistApp.Migrations
 {
     [DbContext(typeof(ShoppingListContext))]
-    [Migration("20220717160702_initial")]
-    partial class initial
+    [Migration("20220723110152_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,58 @@ namespace ShoppinglistApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AspNetUsers");
+                });
 
             modelBuilder.Entity("ShoppinglistApp.Models.ShoppingListItem", b =>
                 {
@@ -60,38 +112,9 @@ namespace ShoppinglistApp.Migrations
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserID1")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserID1");
-
                     b.ToTable("Shoppinglists");
-                });
-
-            modelBuilder.Entity("ShoppinglistApp.Models.User", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ShoppinglistApp.Models.ShoppingListItem", b =>
@@ -101,21 +124,9 @@ namespace ShoppinglistApp.Migrations
                         .HasForeignKey("ShoppingListItemId");
                 });
 
-            modelBuilder.Entity("ShoppinglistApp.Models.Shoppinglist", b =>
-                {
-                    b.HasOne("ShoppinglistApp.Models.User", null)
-                        .WithMany("Shoppinglists")
-                        .HasForeignKey("UserID1");
-                });
-
             modelBuilder.Entity("ShoppinglistApp.Models.ShoppingListItem", b =>
                 {
                     b.Navigation("items");
-                });
-
-            modelBuilder.Entity("ShoppinglistApp.Models.User", b =>
-                {
-                    b.Navigation("Shoppinglists");
                 });
 #pragma warning restore 612, 618
         }
