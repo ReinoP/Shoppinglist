@@ -33,14 +33,12 @@ namespace ShoppinglistApp.Controllers
 			List<Shoppinglist> list;
 			var userId = _manager.GetUserId(User);
 			list = await _context.Shoppinglists.Where(u => u.ListID == userId).ToListAsync();
-
-
 			return View(list);
 		}
 
 		// GET: Shoppinglist/Details/5
 		[Authorize]
-		public async Task<IActionResult> Details(string? id)
+		public async Task<IActionResult> Details(string id)
 		{
 			if (id == null)
 			{
@@ -111,7 +109,7 @@ namespace ShoppinglistApp.Controllers
 
 		// GET: Shoppinglist/Edit/5
 		[Authorize]
-		public async Task<IActionResult> Edit(string? id)
+		public async Task<IActionResult> Edit(string id)
 		{
 			if (id == null)
 			{
@@ -185,7 +183,7 @@ namespace ShoppinglistApp.Controllers
 
 		// GET: Shoppinglist/Delete/5
 		[Authorize]
-		public async Task<IActionResult> Delete(string? id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			if (id == null)
 			{
