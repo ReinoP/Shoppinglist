@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ShoppinglistApp.Data;
 using ShoppinglistApp.Models;
 
@@ -30,7 +31,7 @@ namespace ShoppinglistApp.Controllers
 		public async Task<IActionResult> Index()
 		{
 			UserListView list = new UserListView();
-			list.userList = await _userContext.Users.ToListAsync();
+			list.UserList = await _userContext.Users.ToListAsync();
 
 			return View(list);
 		}
@@ -40,7 +41,7 @@ namespace ShoppinglistApp.Controllers
 		{
 			//only users friends
 			UserListView list = new UserListView();
-			list.userList = await _userContext.Users.ToListAsync();
+			list.UserList = await _userContext.Users.ToListAsync();
 
 			return View(list);
 		}
@@ -50,7 +51,7 @@ namespace ShoppinglistApp.Controllers
 		public async Task<IActionResult> FindFriends()
 		{
 			UserListView list = new UserListView();
-			list.userList = await _userContext.Users.ToListAsync();
+			list.UserList = await _userContext.Users.ToListAsync();
 
 			return View(list);
 		}
@@ -63,7 +64,7 @@ namespace ShoppinglistApp.Controllers
 				return NotFound();
 			}
 
-			var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
+			var user = await _userContext.Users.FirstOrDefaultAsync(m => m.Id == id);
 			if (user == null)
 			{
 				return NotFound();
@@ -78,20 +79,25 @@ namespace ShoppinglistApp.Controllers
 			return View();
 		}
 
-		// POST: Users/AddFriend
+		// POST: Users/AddFriends
 		// To protect from overposting attacks, enable the specific properties you want to bind to.
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[Authorize]
 		public async Task<IActionResult> AddFriends(string friendlist)
 		{
-			Debug.WriteLine(friendlist);
-			//if (ModelState.IsValid)
-			//{
-			//	_context.Add(user);
-			//	await _context.SaveChangesAsync();
-			//	return RedirectToAction(nameof(Index));
-			//}
+			var nameArr = JsonConvert.DeserializeObject<string[]>(friendlist);
+			var curUser =await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name) ;
+
+			foreach (string s in nameArr)
+			{
+				var friendRequest = new FriendRequestModel();
+				friendRequest.SenderEmail = curUser.Email;
+				friendRequest.TargetEmail = s;
+				_userContext.FriendRequests.Add(friendRequest);
+			}
+			await _userContext.SaveChangesAsync();
+			
 			return View();
 		}
 
@@ -122,7 +128,7 @@ namespace ShoppinglistApp.Controllers
 		[Authorize]
 		public async Task<IActionResult> Edit(int id)
 		{
-			var user = await _context.Users.FindAsync(id);
+			var user = await _userContext.Users.FindAsync(id);
 			if (user == null)
 			{
 				return NotFound();
@@ -174,7 +180,7 @@ namespace ShoppinglistApp.Controllers
 				return NotFound();
 			}
 
-			var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
+			var user = await _userContext.Users.FirstOrDefaultAsync(m => m.Id == id);
 			if (user == null)
 			{
 				return NotFound();
@@ -188,15 +194,15 @@ namespace ShoppinglistApp.Controllers
 		[Authorize]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			var user = await _context.Users.FindAsync(id);
-			_context.Users.Remove(user);
+			var user = await _userContext.Users.FindAsync(id);
+			_userContext.Users.Remove(user);
 			await _context.SaveChangesAsync();
 			return RedirectToAction(nameof(Index));
 		}
 
 		private bool UserExists(string id)
 		{
-			return _context.Users.Any(e => e.Id == id);
+			return _userContext.Users.Any(e => e.Id == id);
 		}
 	}
 }

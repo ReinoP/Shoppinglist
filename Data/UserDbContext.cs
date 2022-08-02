@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ShoppinglistApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,24 @@ namespace ShoppinglistApp.Data
 		public UserDbContext(DbContextOptions<UserDbContext> options)
 				: base(options)
 		{
+		}
+
+		public DbSet<FriendRequestModel> FriendRequests { get; set; }
+		public DbSet<FriendListModel> FriendList { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
+			modelBuilder.Entity<FriendRequestModel>().ToTable("FriendRequests");
+			modelBuilder.Entity<FriendRequestModel>()
+				.Property(f => f.Id)
+				.ValueGeneratedOnAdd();
+
+			modelBuilder.Entity<FriendListModel>().ToTable("FriendList");
+			modelBuilder.Entity<FriendListModel>()
+				.Property(f => f.Id)
+				.ValueGeneratedOnAdd();
+
 		}
 	}
 }

@@ -16,7 +16,7 @@
 		</div>
 		<div class="col-md-4">
 			<h3>Send a friend request!</h3>
-			@foreach (var item in Model.userList)
+			@foreach (var item in Model.UserList)
 			{
 				<span>@Html.DisplayFor(modelItem => item.Email)</span> <a href='javascript: void (0);' onclick="addFriend('@item.Email')">Add</a><br />
 			}

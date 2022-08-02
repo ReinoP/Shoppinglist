@@ -16,10 +16,11 @@ namespace ShoppinglistApp.Controllers
 
 	public class AccountController : Controller
 	{
-		private readonly ShoppingListContext _context;
-		public AccountController(ShoppingListContext context)
+		private readonly UserDbContext _userContext;
+
+		public AccountController(UserDbContext context)
 		{
-			this._context = context;
+			this._userContext = context;
 		}
 
 		[HttpGet]
@@ -44,8 +45,8 @@ namespace ShoppinglistApp.Controllers
 			{
 				try
 				{
-					_context.Users.Add(user);
-					await _context.SaveChangesAsync();
+					_userContext.Users.Add(user);
+					await _userContext.SaveChangesAsync();
 				}
 				catch (DbException)
 				{
@@ -58,7 +59,7 @@ namespace ShoppinglistApp.Controllers
 				Debug.WriteLine("not valid");
 			}
 			var userList = new List<IdentityUser>();
-			userList = _context.Users.ToList();
+			userList = _userContext.Users.ToList();
 			return RedirectToAction(nameof(Index));
 		}
 

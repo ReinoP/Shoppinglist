@@ -10,13 +10,11 @@ namespace ShoppinglistApp.Data
 		{
 		}
 
-		public DbSet<IdentityUser> Users { get; set; }
 		public DbSet<Shoppinglist> Shoppinglists { get; set; }
 		public DbSet<ShoppingListItem> ShoppingListItems { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			//modelBuilder.Entity<IdentityUser>().ToTable("AspNetUsers");
 			modelBuilder.Entity<Shoppinglist>().ToTable("Shoppinglists");
 			modelBuilder.Entity<ShoppingListItem>().ToTable("ShoppingListItems");
 

@@ -8,7 +8,7 @@ namespace ShoppinglistApp.Models
 {
 	public class UserListView
 	{
-		public List<IdentityUser> userList{ get; set; }
+		public List<IdentityUser> UserList{ get; set; }
 
 	}
 }

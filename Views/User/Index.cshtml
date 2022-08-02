@@ -16,7 +16,7 @@
 		</div>
 		<div class="col-md-4">
 			<h3>List of users you can share your list with</h3>
-			@foreach (var item in Model.userList)
+			@foreach (var item in Model.UserList)
 			{
 				<span>@Html.DisplayFor(modelItem => item.Email)</span> <a asp-action="Share" asp-route-id="@item.Id">Share</a><br />
 			}
