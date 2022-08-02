@@ -87,7 +87,7 @@ namespace ShoppinglistApp.Controllers
 		public async Task<IActionResult> AddFriends(string friendlist)
 		{
 			var nameArr = JsonConvert.DeserializeObject<string[]>(friendlist);
-			var curUser =await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name) ;
+			var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name) ;
 
 			foreach (string s in nameArr)
 			{
@@ -117,8 +117,8 @@ namespace ShoppinglistApp.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				_context.Add(user);
-				await _context.SaveChangesAsync();
+				_userContext.Users.Add(user);
+				await _userContext.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
 			}
 			return View(user);
@@ -152,8 +152,8 @@ namespace ShoppinglistApp.Controllers
 			{
 				try
 				{
-					_context.Update(user);
-					await _context.SaveChangesAsync();
+					_userContext.Users.Update(user);
+					await _userContext.SaveChangesAsync();
 				}
 				catch (DbUpdateConcurrencyException)
 				{
@@ -196,7 +196,7 @@ namespace ShoppinglistApp.Controllers
 		{
 			var user = await _userContext.Users.FindAsync(id);
 			_userContext.Users.Remove(user);
-			await _context.SaveChangesAsync();
+			await _userContext.SaveChangesAsync();
 			return RedirectToAction(nameof(Index));
 		}
 
