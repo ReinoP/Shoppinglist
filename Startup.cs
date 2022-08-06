@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ShoppinglistApp.Data;
 
 using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace ShoppinglistApp
 {
@@ -23,6 +24,16 @@ namespace ShoppinglistApp
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddDistributedMemoryCache();
+
+			// Add these 6 lines
+			services.AddSession(options =>
+			{
+				options.IdleTimeout = TimeSpan.FromSeconds(300);
+				options.Cookie.HttpOnly = true;
+				options.Cookie.IsEssential = true;
+			});
+
 			services.AddDbContext<ShoppingListContext>(options =>
 				 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -57,6 +68,7 @@ namespace ShoppinglistApp
 			app.UseRouting();
 			app.UseAuthentication();
 			app.UseAuthorization();
+			app.UseSession();
 
 			app.UseEndpoints(endpoints =>
 			{

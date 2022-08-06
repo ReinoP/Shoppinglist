@@ -11,30 +11,31 @@
 	<div class="row">
 		@if (!SignInManager.IsSignedIn(User))
 		{
-			<div class="col-md-4">
+			<div class="col">
 				<h2>The application</h2>
 				<p>
-					This application allows users to create, save and share shopping lists. It is built with .NET core MVC.
+					This application allows users to create, save and share shopping lists. It is built with .NET core.
 				</p>
 			</div>
 
-			<div class="col-md-4">
+			<div class="col">
 				<h2>Getting started</h2>
 				<p>You just need to register and sign in!</p>
 			</div>
 		}
 		@if (SignInManager.IsSignedIn(User))
 		{
-			<div class="col-md-4">
+			<div class="col">
 				<h2>List system</h2>
 				<p>Creating shoppinglists is easy, just navigate to Create list page, and add items to your list!</p>
 				<p>You can edit your lists if you need to: Add or remove items.</p>
 			</div>
-			<div class="col-md-4">
+			<div class="col">
 				<h2>Friend system</h2>
 				<p>In order to be able to share shoppinglists, you first need send friend requests to other users.</p>
 				<p>Once they accept the request, you are able to share your lists with them.</p>
 			</div>
+
 		}
 	</div>
 	

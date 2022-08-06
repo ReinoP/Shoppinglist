@@ -20,10 +20,10 @@ namespace ShoppinglistApp.Data
 
 			var users = new IdentityUser[]
 			{
-				new IdentityUser{UserName="Matti",Email="matti@joku.com"},
-				new IdentityUser{UserName="Pekka",Email="Parttinen"},
-				new IdentityUser{UserName="Hanna",Email="Kollikka"},
-				new IdentityUser{UserName="Laura",Email="Bosch"},
+				new IdentityUser{UserName="Matti",Email="matti.laukaala@example.com"},
+				new IdentityUser{UserName="Pekka",Email="pekka.parttinen@example.com"},
+				new IdentityUser{UserName="Hanna",Email="hanna.pollikka@example.com"},
+				new IdentityUser{UserName="Laura",Email="laura.bosch@example.com"},
 				};
 
 			foreach (IdentityUser u in users)

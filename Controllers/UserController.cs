@@ -48,7 +48,7 @@ namespace ShoppinglistApp.Controllers
 
 		// GET: All users
 		[Authorize]
-		public async Task<IActionResult> FindFriends()
+		public async Task<IActionResult> ManageFriends()
 		{
 			UserListView list = new UserListView();
 			list.UserList = await _userContext.Users.ToListAsync();
