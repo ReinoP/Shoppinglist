@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace ShoppinglistApp.Models
 {
-	public class UserListView
+	public class ManageFriendsView
 	{
 		public List<IdentityUser> UserList{ get; set; }
+		public List<FriendRequestModel> FriendRequests { get; set; }
+		public List<FriendModel> MyFriendsList { get; set; }
 
 	}
 }

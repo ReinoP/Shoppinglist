@@ -17,7 +17,7 @@ namespace ShoppinglistApp.Data
 		}
 
 		public DbSet<FriendRequestModel> FriendRequests { get; set; }
-		public DbSet<FriendListModel> FriendList { get; set; }
+		public DbSet<FriendModel> FriendList { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -27,8 +27,8 @@ namespace ShoppinglistApp.Data
 				.Property(f => f.Id)
 				.ValueGeneratedOnAdd();
 
-			modelBuilder.Entity<FriendListModel>().ToTable("FriendList");
-			modelBuilder.Entity<FriendListModel>()
+			modelBuilder.Entity<FriendModel>().ToTable("FriendList");
+			modelBuilder.Entity<FriendModel>()
 				.Property(f => f.Id)
 				.ValueGeneratedOnAdd();
 

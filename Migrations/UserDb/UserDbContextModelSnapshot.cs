@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoppinglistApp.Data;
 
-namespace ShoppinglistApp.Migrations
+namespace ShoppinglistApp.Migrations.UserDb
 {
     [DbContext(typeof(UserDbContext))]
     partial class UserDbContextModelSnapshot : ModelSnapshot
@@ -219,22 +219,20 @@ namespace ShoppinglistApp.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ShoppinglistApp.Models.FriendListModel", b =>
+            modelBuilder.Entity("ShoppinglistApp.Models.FriendModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("FriendId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("FriendEmail")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserEmail")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FriendId");
 
                     b.ToTable("FriendList");
                 });
@@ -306,15 +304,6 @@ namespace ShoppinglistApp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ShoppinglistApp.Models.FriendListModel", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Friend")
-                        .WithMany()
-                        .HasForeignKey("FriendId");
-
-                    b.Navigation("Friend");
                 });
 #pragma warning restore 612, 618
         }

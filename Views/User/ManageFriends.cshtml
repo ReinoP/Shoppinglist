@@ -1,0 +1,162 @@
+﻿@model ManageFriendsView
+@{
+	ViewData["Title"] = "User Home Page";
+}
+
+<div class="text-center">
+	<div class="jumbotron">
+		<h2>Manage your friends</h2>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<h5>Instructions</h5>
+			<p>
+				Here you can send a friends request to other users so you can share lists with them!
+			</p>
+		</div>
+		<div class="col">
+			<h5>Your friends.</h5> <br />
+			<div id="myFriends">
+				@foreach (var item in Model.MyFriendsList)
+				{
+					<span>@Html.DisplayFor(modelItem => item.UserEmail)</span> <a href='javascript: void (0);' onclick="removeFriend('@item.UserEmail')">Remove</a><br />
+				}
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col">
+				<h5>Incoming friend requests.</h5> <br />
+				<div id="myFriendRequests">
+					@foreach (var item in Model.FriendRequests)
+					{
+						<span>@Html.DisplayFor(modelItem => item.SenderEmail)</span> <a href='javascript: void (0);' onclick="acceptRequest('@item.SenderEmail')">Accept</a> <a href='javascript: void (0);' onclick="declineRequest('@item.SenderEmail')">Decline</a><br />
+					}
+				</div>
+			</div>
+			<div class="col">
+				<h5>Send a friend request!</h5>
+					@foreach (var item in Model.UserList)
+					{
+						<span>@Html.DisplayFor(modelItem => item.Email)</span> <a href='javascript: void (0);' onclick="addFriend('@item.Email')">Add</a><br />
+					}
+			</div>
+
+			<div class="col">
+				<h5>People you wish to befriend.</h5> <br />
+				<div id="addedFriends"></div>
+				<br />
+				<input type="button" value="Send friend requests" onclick="submitForm()" class="btn btn-primary btn-sm" id="submitBtn" style="display:none" />
+			</div>
+		</div>
+	</div>
+	</div>
+	@section Scripts {
+		@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+	<script type="text/javascript" language="javascript">
+		var nameArr = [];
+		var friendArr = [];
+		var incomingRequestsArr = [];
+		var counter = 0;
+		var myFriendCounter = 0;
+		var documentLoaded = false;
+
+		$(document).ready(function () {
+			documentLoaded = true;
+		});
+
+		function acceptRequest(email) {
+			document.getElementById("myFriendRequests").innerHTML = "";
+			if (documentLoaded == true) {
+				@foreach (var d in Model.FriendRequests)
+				{
+					@:if("@d.SenderEmail" != email) 
+						@:incomingRequestsArr.push("@d.SenderEmail");
+				
+				}
+				incomingRequestsArr.forEach((i) => {
+					$("#myFriendRequests").append("<a href='javascript: void (0);' onclick='acceptRequest(" + email + ")'>Accept</a> <a href='javascript: void (0);' onclick='declineRequest(" + email + ")'>Decline</a>" + "<br>");
+				});
+			//TODO actually accept it
+				$.ajax({
+					type: "POST",
+					url: '/User/AcceptRequest',
+					data: { friendEmail: email},
+					success: function (data) {
+						alert("Success");
+					},
+					failure: function (errMsg) {
+						alert(errMsg);
+					}
+				});
+			}
+		}
+
+		function declineRequest(email) {
+			//TODO actually decline it
+
+			document.getElementById("myFriendRequests").innerHTML = "";
+			if (documentLoaded == true) {
+
+			@foreach (var d in Model.FriendRequests)
+			{
+				@:if ("@d.SenderEmail" != email) 
+					@:incomingRequestsArr.push("@d.SenderEmail");
+				
+				}
+				incomingRequestsArr.forEach((i) => {
+					$("#myFriendRequests").append("<a href='javascript: void (0);' onclick='acceptRequest(" + email + ")'>Accept</a> <a href='javascript: void (0);' onclick='declineRequest(" + email + ")'>Decline</a>" + "<br>");
+				});
+			}
+		}
+
+		function addFriend(email) {
+			nameArr.push(email);
+			$("#addedFriends").append(email + "<a href='javascript: void (0);' onclick='undoMyRequest(" + counter + ");''> remove </a>" + "<br>");
+			counter++;
+			document.getElementById("submitBtn").style = "";
+		}
+
+		function undoMyRequest(c) {
+			nameArr.splice(c, 1);
+			document.getElementById("addedFriends").innerHTML = "";
+			counter = 0;
+
+			nameArr.forEach((i) => {
+				$("#addedFriends").append(i + "<a href='javascript: void (0);' onclick='undoMyRequest(" + counter + ");''> remove </a>" + "<br>");
+				counter++;
+			});
+			if (counter == 0) {
+				document.getElementById("submitBtn").style = "display:none";
+			}
+		}
+
+		function removeFriend(c) {
+			friendArr.splice(c, 1);
+			document.getElementById("myFriends").innerHTML = "";
+			myFriendCounter = 0;
+
+			nameArr.forEach((i) => {
+				$("#myFriends").append(i + "<a href='javascript: void (0);' onclick='undoMyRequest(" + myFriendCounter + ");''> remove </a>" + "<br>");
+				myFriendCounter++;
+			});
+
+		}
+		function submitForm() {
+			$.ajax({
+				type: "POST",
+				url: '/User/AddFriends',
+				data: { friendlist: JSON.stringify(nameArr) },
+				success: function (data) {
+					alert("Success");
+				},
+				failure: function (errMsg) {
+					alert(errMsg);
+				}
+			});
+		}
+	</script>

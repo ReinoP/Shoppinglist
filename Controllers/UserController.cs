@@ -30,28 +30,26 @@ namespace ShoppinglistApp.Controllers
 		[Authorize]
 		public async Task<IActionResult> Index()
 		{
-			UserListView list = new UserListView();
-			list.UserList = await _userContext.Users.ToListAsync();
+			//ManageFriendsView list = new ManageFriendsView();
+			//list.UserList = await _userContext.Users.ToListAsync();
+			//list.FriendRequests = await _userContext.FriendRequests.ToListAsync();
 
-			return View(list);
+			//return View(list);
+			return View();
 		}
-		// GET: Users
-		[Authorize]
-		public async Task<IActionResult> Friends()
-		{
-			//only users friends
-			UserListView list = new UserListView();
-			list.UserList = await _userContext.Users.ToListAsync();
 
-			return View(list);
-		}
 
 		// GET: All users
 		[Authorize]
 		public async Task<IActionResult> ManageFriends()
 		{
-			UserListView list = new UserListView();
+			ManageFriendsView list = new ManageFriendsView();
+			var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
+
+			//var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
+			list.FriendRequests = await _userContext.FriendRequests.ToListAsync();
 			list.UserList = await _userContext.Users.ToListAsync();
+			list.MyFriendsList =await _userContext.FriendList.Where(f => f.FriendEmail == curUser.Email).ToListAsync();
 
 			return View(list);
 		}
@@ -72,8 +70,6 @@ namespace ShoppinglistApp.Controllers
 
 			return View(user);
 		}
-
-
 		public IActionResult AddFriends()
 		{
 			return View();
@@ -87,7 +83,7 @@ namespace ShoppinglistApp.Controllers
 		public async Task<IActionResult> AddFriends(string friendlist)
 		{
 			var nameArr = JsonConvert.DeserializeObject<string[]>(friendlist);
-			var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name) ;
+			var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
 
 			foreach (string s in nameArr)
 			{
@@ -97,8 +93,32 @@ namespace ShoppinglistApp.Controllers
 				_userContext.FriendRequests.Add(friendRequest);
 			}
 			await _userContext.SaveChangesAsync();
-			
+
 			return View();
+		}
+
+		//public IActionResult AcceptRequest()
+		//{
+		//	return View();
+		//}
+
+		[HttpPost]
+		[Authorize]
+		public async Task<IActionResult> AcceptRequest(string friendEmail)
+		{
+		
+			var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name) ;
+			//var newFriend = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == friendEmail);
+			Debug.WriteLine("acceptrequst " + friendEmail);
+			var newFriend = new FriendModel();
+			newFriend.UserEmail = curUser.Email;
+			newFriend.FriendEmail = friendEmail;
+
+			_userContext.FriendList.Add(newFriend);
+		
+			await _userContext.SaveChangesAsync();
+
+			return Redirect("~/User/ManageFriends");
 		}
 
 		// GET: Users/Create

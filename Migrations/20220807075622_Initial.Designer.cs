@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoppinglistApp.Data;
 
-namespace ShoppinglistApp.Migrations.ShoppingList
+namespace ShoppinglistApp.Migrations
 {
     [DbContext(typeof(ShoppingListContext))]
-    [Migration("20220802080946_initial")]
-    partial class initial
+    [Migration("20220807075622_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
