@@ -46,16 +46,17 @@
 				<h5>People you wish to befriend.</h5> <br />
 				<div id="addedFriends"></div>
 				<br />
-				<input type="button" value="Send friend requests" onclick="submitForm()" class="btn btn-primary btn-sm" id="submitBtn" style="display:none" />
+				<input type="button" value="Send friend requests" onclick="sendRequests()" class="btn btn-primary btn-sm" id="submitBtn" style="display:none" />
 			</div>
 		</div>
 	</div>
 	</div>
+
+
 	@section Scripts {
 		@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 	}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
 
 	<script type="text/javascript" language="javascript">
 		var nameArr = [];
@@ -81,24 +82,22 @@
 				incomingRequestsArr.forEach((i) => {
 					$("#myFriendRequests").append("<a href='javascript: void (0);' onclick='acceptRequest(" + email + ")'>Accept</a> <a href='javascript: void (0);' onclick='declineRequest(" + email + ")'>Decline</a>" + "<br>");
 				});
-			//TODO actually accept it
+	
 				$.ajax({
 					type: "POST",
 					url: '/User/AcceptRequest',
 					data: { friendEmail: email},
 					success: function (data) {
-						alert("Success");
+						alert("Friendrequest accepted!");
 					},
 					failure: function (errMsg) {
-						alert(errMsg);
+						alert("Something went wrong.");
 					}
 				});
 			}
 		}
 
 		function declineRequest(email) {
-			//TODO actually decline it
-
 			document.getElementById("myFriendRequests").innerHTML = "";
 			if (documentLoaded == true) {
 
@@ -112,13 +111,27 @@
 					$("#myFriendRequests").append("<a href='javascript: void (0);' onclick='acceptRequest(" + email + ")'>Accept</a> <a href='javascript: void (0);' onclick='declineRequest(" + email + ")'>Decline</a>" + "<br>");
 				});
 			}
+
+			$.ajax({
+				type: "POST",
+				url: '/User/DeclineRequest',
+				data: { friendEmail: email },
+				success: function (data) {
+					alert("Friendrequest declined");
+				},
+				failure: function (errMsg) {
+					alert("Something went wrong.");
+				}
+			});
 		}
 
 		function addFriend(email) {
-			nameArr.push(email);
-			$("#addedFriends").append(email + "<a href='javascript: void (0);' onclick='undoMyRequest(" + counter + ");''> remove </a>" + "<br>");
-			counter++;
-			document.getElementById("submitBtn").style = "";
+			if (!nameArr.includes(email)) {
+				nameArr.push(email);
+				$("#addedFriends").append(email + "<a href='javascript: void (0);' onclick='undoMyRequest(" + counter + ");''> remove </a>" + "<br>");
+				counter++;
+				document.getElementById("submitBtn").style = "";
+			}
 		}
 
 		function undoMyRequest(c) {
@@ -146,16 +159,22 @@
 			});
 
 		}
-		function submitForm() {
+
+		function sendRequests() {
 			$.ajax({
 				type: "POST",
 				url: '/User/AddFriends',
+				dataType: "json",
 				data: { friendlist: JSON.stringify(nameArr) },
 				success: function (data) {
-					alert("Success");
+					if (data == false) {
+						alert("You have already send a request to this user.");
+					}
+					else
+					alert("Friend request/s sent!");
 				},
 				failure: function (errMsg) {
-					alert(errMsg);
+					alert("Something went wrong.");
 				}
 			});
 		}

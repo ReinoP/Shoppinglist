@@ -10,7 +10,7 @@ using ShoppinglistApp.Data;
 namespace ShoppinglistApp.Migrations.UserDb
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20220807075658_Initial")]
+    [Migration("20220807161722_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -250,9 +250,13 @@ namespace ShoppinglistApp.Migrations.UserDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TargetEmail")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TargetEmail")
+                        .IsUnique()
+                        .HasFilter("[TargetEmail] IS NOT NULL");
 
                     b.ToTable("FriendRequests");
                 });

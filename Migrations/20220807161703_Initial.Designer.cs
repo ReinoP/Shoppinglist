@@ -10,7 +10,7 @@ using ShoppinglistApp.Data;
 namespace ShoppinglistApp.Migrations
 {
     [DbContext(typeof(ShoppingListContext))]
-    [Migration("20220807075622_Initial")]
+    [Migration("20220807161703_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

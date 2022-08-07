@@ -27,6 +27,8 @@ namespace ShoppinglistApp.Data
 				.Property(f => f.Id)
 				.ValueGeneratedOnAdd();
 
+			modelBuilder.Entity<FriendRequestModel>().HasIndex(e => e.TargetEmail).IsUnique();
+
 			modelBuilder.Entity<FriendModel>().ToTable("FriendList");
 			modelBuilder.Entity<FriendModel>()
 				.Property(f => f.Id)

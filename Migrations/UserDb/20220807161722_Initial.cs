@@ -67,7 +67,7 @@ namespace ShoppinglistApp.Migrations.UserDb
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SenderEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TargetEmail = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    TargetEmail = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,6 +218,13 @@ namespace ShoppinglistApp.Migrations.UserDb
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FriendRequests_TargetEmail",
+                table: "FriendRequests",
+                column: "TargetEmail",
+                unique: true,
+                filter: "[TargetEmail] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

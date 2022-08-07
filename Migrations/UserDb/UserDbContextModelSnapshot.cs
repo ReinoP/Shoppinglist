@@ -248,9 +248,13 @@ namespace ShoppinglistApp.Migrations.UserDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TargetEmail")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TargetEmail")
+                        .IsUnique()
+                        .HasFilter("[TargetEmail] IS NOT NULL");
 
                     b.ToTable("FriendRequests");
                 });
