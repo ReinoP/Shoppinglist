@@ -19,6 +19,27 @@ namespace ShoppinglistApp.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ShoppinglistApp.Models.SharedListModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FriendEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ListId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SharedLists");
+                });
+
             modelBuilder.Entity("ShoppinglistApp.Models.ShoppingListItem", b =>
                 {
                     b.Property<int>("Id")

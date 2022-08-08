@@ -7,6 +7,21 @@ namespace ShoppinglistApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "SharedLists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FriendEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ListId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SharedLists", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ShoppingListItems",
                 columns: table => new
                 {
@@ -50,6 +65,9 @@ namespace ShoppinglistApp.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "SharedLists");
+
             migrationBuilder.DropTable(
                 name: "ShoppingListItems");
 

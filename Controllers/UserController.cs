@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -30,11 +31,8 @@ namespace ShoppinglistApp.Controllers
 		[Authorize]
 		public async Task<IActionResult> Index()
 		{
-			//ManageFriendsView list = new ManageFriendsView();
-			//list.UserList = await _userContext.Users.ToListAsync();
-			//list.FriendRequests = await _userContext.FriendRequests.ToListAsync();
-
-			//return View(list);
+			
+			
 			return View();
 		}
 
@@ -109,26 +107,55 @@ namespace ShoppinglistApp.Controllers
 			return Json(true); 
 		}
 
-		//public IActionResult AcceptRequest()
-		//{
-		//	return View();
-		//}
+		[HttpPost]
+		[Authorize]
+		public async Task<IActionResult> RemoveFriend(string friendEmail)
+		{
+			var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
+			try
+			{
+				var friend = await _userContext.FriendList.FirstOrDefaultAsync(f => f.UserEmail == curUser.Email);
+				_userContext.FriendList.Remove(friend);
+				await _userContext.SaveChangesAsync();
+			}
+			//TODO maybe let user know why it fails?
+			catch (Exception e)
+			{
+				return Json(false);
+			}
+			return Json(true);
+		}
 
 		[HttpPost]
 		[Authorize]
 		public async Task<IActionResult> AcceptRequest(string friendEmail)
 		{
 		
-			var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name) ;
-			//var newFriend = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == friendEmail);
-			Debug.WriteLine("acceptrequst " + friendEmail);
+			var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
 			var newFriend = new FriendModel();
 			newFriend.UserEmail = curUser.Email;
 			newFriend.FriendEmail = friendEmail;
-
 			_userContext.FriendList.Add(newFriend);
-		
+
+			var fRequest= await _userContext.FriendRequests.FirstOrDefaultAsync(r => r.SenderEmail == friendEmail);
+			_userContext.FriendRequests.Remove(fRequest);
+
 			await _userContext.SaveChangesAsync();
+
+			var requests = Int32.Parse(HttpContext.Session.GetString("FriendRequests"));
+			if (requests > 0)
+			{
+				requests -= 1;
+			}
+			if(requests > 0)
+			{
+				HttpContext.Session.SetString("FriendRequests", requests.ToString());
+
+			}
+			else
+			{
+				HttpContext.Session.Remove("FriendRequests");
+			}
 
 			return Redirect("~/User/ManageFriends");
 		}
@@ -137,16 +164,26 @@ namespace ShoppinglistApp.Controllers
 		[Authorize]
 		public async Task<IActionResult> DeclineRequest(string friendEmail)
 		{
-
 			var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
-			//var newFriend = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == friendEmail);
-			Debug.WriteLine("decline " + friendEmail);
-
 			var req = await _userContext.FriendRequests.FirstOrDefaultAsync(m => m.TargetEmail == User.Identity.Name);
 			_userContext.FriendRequests.Remove(req);
 
 			await _userContext.SaveChangesAsync();
 
+			var requests = Int32.Parse(HttpContext.Session.GetString("FriendRequests"));
+			if (requests > 0)
+			{
+				requests = requests - 1;
+			}
+			if (requests > 0)
+			{
+				HttpContext.Session.SetString("FriendRequests", requests.ToString());
+
+			}
+			else
+			{
+				HttpContext.Session.Remove("FriendRequests");
+			}
 			return Redirect("~/User/ManageFriends");
 		}
 

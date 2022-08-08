@@ -34,9 +34,64 @@
 				<td>
 					<a asp-action="Edit" asp-route-id="@item.ListID">Edit</a> |
 					<a asp-action="Details" asp-route-id="@item.ListID">Details</a> |
-					<a asp-action="Delete" asp-route-id="@item.ListID">Delete</a>
+					<a asp-action="Delete" asp-route-id="@item.ListID">Delete</a> |
+					<button type="button" class="btn btn-primary" data-toggle="modal" onclick="setListId('@item.ListID')" data-target="#friendsModal">
+						Share
+					</button>
 				</td>
 			</tr>
 		}
 	</tbody>
 </table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="friendsModal" tabindex="-1" role="dialog" aria-labelledby="friendsModal" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form method="post" asp-controller="employee" asp-action="create">
+				<div class="modal-header">
+					<h5 class="modal-title" id="friendsModalLabel">Select a friend to share list with</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					@foreach (var item in ViewBag.FriendList)
+					{
+						<span>@Html.Raw(item.UserEmail)</span> <a href='javascript: void (0);' onclick="share('@item.UserEmail')">Select</a><br />
+					}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script type="text/javascript" language="javascript">
+	var sharedListId;
+	function share(email) {
+		$.ajax({
+				type: "POST",
+				url: '/Shoppinglist/ShareList',
+				data: { listId: sharedListId, targetEmail: email },
+				success: function (data) {
+					alert("List has been shared!");
+					javascript: location.reload();
+				},
+				failure: function (errMsg) {
+					alert("Something went wrong.");
+				}
+			});
+	}
+	function setListId(id) {
+		sharedListId = id;
+	}
+</script>

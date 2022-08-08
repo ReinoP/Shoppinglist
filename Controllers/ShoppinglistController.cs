@@ -19,24 +19,34 @@ namespace ShoppinglistApp.Controllers
 	{
 		private readonly ShoppingListContext _context;
 		private readonly UserManager<IdentityUser> _manager;
+		private readonly UserDbContext _userContext;
 
-		public ShoppinglistController(ShoppingListContext context, UserManager<IdentityUser> manager)
+
+		public ShoppinglistController(ShoppingListContext context, UserManager<IdentityUser> manager, UserDbContext ucontext)
 		{
 			_manager = manager;
 			_context = context;
+			_userContext = ucontext;
+
 		}
 
-		// GET: Shoppinglist
+
 		[Authorize]
 		public async Task<IActionResult> Index()
 		{
-			List<Shoppinglist> list;
+			var curUser = await _userContext.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
+
 			var userId = _manager.GetUserId(User);
-			list = await _context.Shoppinglists.Where(u => u.ListID == userId).ToListAsync();
+			var list = await _context.Shoppinglists.Where(u => u.ListID == userId).ToListAsync();
+
+			var friendsList = await _userContext.FriendList.Where(f => f.FriendEmail == curUser.Email).ToListAsync();
+
+			ViewBag.FriendList = friendsList;
+
 			return View(list);
 		}
 
-		// GET: Shoppinglist/Details/5
+
 		[Authorize]
 		public async Task<IActionResult> Details(string id)
 		{
@@ -61,18 +71,16 @@ namespace ShoppinglistApp.Controllers
 			return View(list);
 		}
 
-		// GET: Shoppinglist/Create
+
 		[Authorize]
 		public IActionResult Create()
 		{
 			return View(new Shoppinglist());
 		}
 
-		// POST: Shoppinglist/Create
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
 		[HttpPost]
-		//[ValidateAntiForgeryToken]
+	
 		[Authorize]
 		public async Task<IActionResult> Create(string listName, string shoppinglist)
 		{
@@ -107,7 +115,7 @@ namespace ShoppinglistApp.Controllers
 		}
 
 
-		// GET: Shoppinglist/Edit/5
+
 		[Authorize]
 		public async Task<IActionResult> Edit(string id)
 		{
@@ -132,9 +140,7 @@ namespace ShoppinglistApp.Controllers
 			return View(list);
 		}
 
-		// POST: Shoppinglist/Edit/5
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
 		[HttpPost]
 		[Authorize]
 		public async Task<IActionResult> Edit(string listName, string listId, string shoppinglist)
@@ -197,6 +203,38 @@ namespace ShoppinglistApp.Controllers
 			}
 
 			return View(shoppinglist);
+		}
+
+		[HttpPost]
+		[Authorize]
+		public async Task<IActionResult> ShareList(string listId, string targetEmail)
+		{
+			var curUser = await _userContext.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
+			try
+			{
+				var shareList = new SharedListModel();
+				shareList.FriendEmail = targetEmail;
+				shareList.ListId = listId;
+				shareList.UserEmail = curUser.Email;
+
+				_context.SharedLists.Add(shareList);
+				await _context.SaveChangesAsync();
+			}
+			catch(Exception e)
+			{
+				return Json(false);
+			}
+
+			return Json(true);
+		}
+
+		[Authorize]
+		public async Task<IActionResult> SharedLists()
+		{
+			var curUser = await _userContext.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
+			var shoppinglists = await _context.SharedLists.Where(u=> u.UserEmail == curUser.Email).ToListAsync();
+
+			return View(shoppinglists);
 		}
 
 		// POST: Shoppinglist/Delete/5

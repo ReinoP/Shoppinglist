@@ -31,9 +31,18 @@
 				</button>
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<ul class="navbar-nav flex-grow-1">
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Shoppinglist" asp-action="Index">View your lists</a>
+						</li>
 						@if (SignInManager.IsSignedIn(User))
 						{
-						<li class="nav-item">
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-controller="Shoppinglist" asp-action="Create">Create list</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-controller="Shoppinglist" asp-action="SharedLists">View shared lists</a>
+							</li>
+							<li class="nav-item">
 								@if (friendRequests == 0)
 								{
 									<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="ManageFriends">Manage friends</a>
@@ -43,12 +52,6 @@
 									<a class="fa" asp-area="" asp-controller="User" asp-action="ManageFriends">Manage friends</a>
 									<span class='badge badge-warning' id='lblRequestCount'> @friendRequests </span>
 								}
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Shoppinglist" asp-action="Create">Create list</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Shoppinglist" asp-action="SharedLists">View shared lists</a>
 							</li>
 						}
 						<li class="nav-item">

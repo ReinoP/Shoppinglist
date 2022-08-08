@@ -89,6 +89,7 @@
 					data: { friendEmail: email},
 					success: function (data) {
 						alert("Friendrequest accepted!");
+						javascript: location.reload();
 					},
 					failure: function (errMsg) {
 						alert("Something went wrong.");
@@ -118,6 +119,7 @@
 				data: { friendEmail: email },
 				success: function (data) {
 					alert("Friendrequest declined");
+					javascript: location.reload();
 				},
 				failure: function (errMsg) {
 					alert("Something went wrong.");
@@ -154,8 +156,21 @@
 			myFriendCounter = 0;
 
 			nameArr.forEach((i) => {
-				$("#myFriends").append(i + "<a href='javascript: void (0);' onclick='undoMyRequest(" + myFriendCounter + ");''> remove </a>" + "<br>");
+				$("#myFriends").append(i + "<a href='javascript: void (0);' onclick='removeFriend(" + myFriendCounter + ");''> remove </a>" + "<br>");
 				myFriendCounter++;
+			});
+
+			$.ajax({
+				type: "POST",
+				url: '/User/RemoveFriend',
+				data: { friendEmail: c },
+				success: function (data) {
+					alert("Friend removed");
+					javascript: location.reload();
+				},
+				failure: function (errMsg) {
+					alert("Something went wrong.");
+				}
 			});
 
 		}
@@ -170,8 +185,10 @@
 					if (data == false) {
 						alert("You have already send a request to this user.");
 					}
-					else
-					alert("Friend request/s sent!");
+					else {
+						alert("Friend request/s sent!");
+						javascript: location.reload();
+					}
 				},
 				failure: function (errMsg) {
 					alert("Something went wrong.");
