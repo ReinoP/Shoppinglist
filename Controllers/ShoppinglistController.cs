@@ -57,16 +57,20 @@ namespace ShoppinglistApp.Controllers
 
 			var shoppinglist = await _context.Shoppinglists
 					.FirstOrDefaultAsync(m => m.ListID == id);
+
+			if (shoppinglist == null)
+			{
+				return NotFound();
+			}
+
+
 			List<ShoppingListItem> items = await _context.ShoppingListItems.Where(m => m.ListId == id).ToListAsync();
 			var list = new ShoppingListViewModel();
 			list.Items = items;
 			list.ListID = shoppinglist.ListID;
 			list.ListName = shoppinglist.ListName;
 			list.UserID = shoppinglist.UserID;
-			if (shoppinglist == null)
-			{
-				return NotFound();
-			}
+
 
 			return View(list);
 		}
@@ -200,6 +204,13 @@ namespace ShoppinglistApp.Controllers
 			if (shoppinglist == null)
 			{
 				return NotFound();
+			}
+			var curUser = await _userContext.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
+			if (curUser.Email != shoppinglist.UserID)
+			{
+				TempData["Message"] = "You are not authorized to delete this item.";
+
+				return RedirectToAction("SharedLists");
 			}
 
 			return View(shoppinglist);
