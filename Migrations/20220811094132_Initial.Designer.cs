@@ -10,7 +10,7 @@ using ShoppinglistApp.Data;
 namespace ShoppinglistApp.Migrations
 {
     [DbContext(typeof(ShoppingListContext))]
-    [Migration("20220808111447_Initial")]
+    [Migration("20220811094132_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace ShoppinglistApp.Migrations
                     b.Property<string>("FriendEmail")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ListId")
+                    b.Property<string>("ListID")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserEmail")

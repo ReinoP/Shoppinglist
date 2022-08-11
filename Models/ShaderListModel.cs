@@ -14,7 +14,9 @@ namespace ShoppinglistApp.Models
 		public string UserEmail { get; set; }
 
 		public string FriendEmail { get; set; }
-		public string ListId { get; set; }
+		public string ListName { get; set; }
+
+		public string ListID { get; set; }
 
 	}
 }

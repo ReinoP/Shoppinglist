@@ -4,11 +4,8 @@
     ViewData["Title"] = "SharedLists";
 }
 
-<h1>SharedLists</h1>
+<h1>Lists shared with me</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -19,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.FriendEmail)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ListId)
+                @Html.DisplayNameFor(model => model.ListName)
             </th>
             <th></th>
         </tr>
@@ -34,12 +31,12 @@
                 @Html.DisplayFor(modelItem => item.FriendEmail)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ListId)
+                @Html.DisplayFor(modelItem => item.ListName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ListID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ListID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ListID">Delete</a>
             </td>
         </tr>
 }

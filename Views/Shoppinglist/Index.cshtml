@@ -35,7 +35,7 @@
 						<a asp-action="Edit" asp-route-id="@item.ListID">Edit</a> |
 						<a asp-action="Details" asp-route-id="@item.ListID">Details</a> |
 						<a asp-action="Delete" asp-route-id="@item.ListID">Delete</a> |
-						<button type="button" class="btn btn-primary" data-toggle="modal" onclick="setListId('@item.ListID')" data-target="#friendsModal">
+						<button type="button" class="btn btn-primary" data-toggle="modal" onclick="setListInfo('@item.ListID' ,'@item.ListName');" data-target="#friendsModal">
 							Share
 						</button>
 					</td>
@@ -77,11 +77,12 @@
 
 	<script type="text/javascript" language="javascript">
 		var sharedListId;
+		var sharedListName;
 		function share(email) {
 			$.ajax({
 				type: "POST",
 				url: '/Shoppinglist/ShareList',
-				data: { listId: sharedListId, targetEmail: email },
+				data: { listId: sharedListId, listName: sharedListName, targetEmail: email },
 				success: function (data) {
 					alert("List has been shared!");
 					javascript: location.reload();
@@ -91,7 +92,8 @@
 				}
 			});
 		}
-		function setListId(id) {
+		function setListInfo(id, name) {
 			sharedListId = id;
+			sharedListName = name;
 		}
 	</script>

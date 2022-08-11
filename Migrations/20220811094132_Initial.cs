@@ -14,7 +14,7 @@ namespace ShoppinglistApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FriendEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ListId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ListID = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

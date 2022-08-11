@@ -207,14 +207,16 @@ namespace ShoppinglistApp.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public async Task<IActionResult> ShareList(string listId, string targetEmail)
+		public async Task<IActionResult> ShareList(string listId, string listName, string targetEmail)
 		{
+			Debug.WriteLine("list name " + listName);
 			var curUser = await _userContext.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
 			try
 			{
 				var shareList = new SharedListModel();
 				shareList.FriendEmail = targetEmail;
-				shareList.ListId = listId;
+				shareList.ListID = listId;
+				shareList.ListName = listName;
 				shareList.UserEmail = curUser.Email;
 
 				_context.SharedLists.Add(shareList);
@@ -232,7 +234,7 @@ namespace ShoppinglistApp.Controllers
 		public async Task<IActionResult> SharedLists()
 		{
 			var curUser = await _userContext.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
-			var shoppinglists = await _context.SharedLists.Where(u=> u.UserEmail == curUser.Email).ToListAsync();
+			var shoppinglists = await _context.SharedLists.Where(u=> u.FriendEmail == curUser.Email).ToListAsync();
 
 			return View(shoppinglists);
 		}

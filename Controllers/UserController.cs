@@ -47,9 +47,10 @@ namespace ShoppinglistApp.Controllers
 			//var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
 			try
 			{
-				list.FriendRequests = await _userContext.FriendRequests.ToListAsync();
+				list.FriendRequests = await _userContext.FriendRequests.Where(f => f.TargetEmail == curUser.Email).ToListAsync();
 				list.UserList = await _userContext.Users.ToListAsync();
-				list.MyFriendsList = await _userContext.FriendList.Where(f => f.FriendEmail == curUser.Email).ToListAsync();
+				list.MyFriendsList =  await _userContext.FriendList.Where(f => f.FriendEmail == curUser.Email).ToListAsync();
+
 			}
 			catch(Exception e)
 			{
@@ -114,9 +115,21 @@ namespace ShoppinglistApp.Controllers
 			var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
 			try
 			{
-				var friend = await _userContext.FriendList.FirstOrDefaultAsync(f => f.UserEmail == curUser.Email);
+				var friend = await _userContext.FriendList.FirstOrDefaultAsync(f => f.UserEmail == curUser.Email && f.FriendEmail == friendEmail);
 				_userContext.FriendList.Remove(friend);
 				await _userContext.SaveChangesAsync();
+				//we remove both friends, as when one is created it creates 2 friendModels, friend1 -> friend2, and friend2->friend1
+				var revereFriend = await _userContext.FriendList.FirstOrDefaultAsync(f => f.FriendEmail == curUser.Email && f.UserEmail == friendEmail);
+				_userContext.FriendList.Remove(revereFriend);
+				await _userContext.SaveChangesAsync();
+
+				//remove any lists that have been shared between them.
+				var list = await _context.SharedLists.Where(l => ( l.UserEmail == friendEmail && l.FriendEmail == curUser.Email) || (l.FriendEmail == friendEmail && l.UserEmail == curUser.Email)).ToListAsync();
+				list.ForEach((list) =>
+				{
+					_context.SharedLists.Remove(list);
+				});
+				await _context.SaveChangesAsync();
 			}
 			//TODO maybe let user know why it fails?
 			catch (Exception e)
@@ -136,6 +149,11 @@ namespace ShoppinglistApp.Controllers
 			newFriend.UserEmail = curUser.Email;
 			newFriend.FriendEmail = friendEmail;
 			_userContext.FriendList.Add(newFriend);
+			//bad way to deal with this probably, but we need to create friend model both ways.
+			var reverseFriend = new FriendModel();
+			reverseFriend.FriendEmail = curUser.Email;
+			reverseFriend.UserEmail = friendEmail;
+			_userContext.FriendList.Add(reverseFriend);
 
 			var fRequest= await _userContext.FriendRequests.FirstOrDefaultAsync(r => r.SenderEmail == friendEmail);
 			_userContext.FriendRequests.Remove(fRequest);
