@@ -4,39 +4,42 @@
 	ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-	<div class="jumbotron">
-		<h1>Reino's shopping list app</h1>
+<div class="row">
+	<div class="col text-center bg-info p-5 py-5 px-2">
+		<h2>Reino's shopping list app</h2>
 	</div>
+</div>
+<div class="container">
 	<div class="row">
 		@if (!SignInManager.IsSignedIn(User))
 		{
 			<div class="col">
-				<h2>The application </h2>
+				<h3>The application </h3>
 				<p>
 					This application allows users to create, save and share shopping lists. It is built with .NET core.
 				</p>
 			</div>
 
 			<div class="col">
-				<h2>Getting started</h2>
+				<h3>Getting started</h3>
 				<p>You just need to register and sign in!</p>
 			</div>
 		}
 		@if (SignInManager.IsSignedIn(User))
 		{
 			<div class="col">
-				<h2>List system</h2>
+				<h3>List system</h3>
 				<p>Creating shoppinglists is easy, just navigate to Create list page, and add items to your list!</p>
 				<p>You can edit your lists if you need to: Add or remove items.</p>
 			</div>
 			<div class="col">
-				<h2>Friend system</h2>
+				<h3>Friend system</h3>
 				<p>In order to be able to share shoppinglists, you first need send friend requests to other users.</p>
 				<p>Once they accept the request, you are able to share your lists with them.</p>
 			</div>
 
 		}
 	</div>
-	
-	</div>
+
+</div>
+			

@@ -2,56 +2,89 @@
 @{
 	ViewData["Title"] = "User Home Page";
 }
-<div class="container">
-	<div class="text-center">
-		<div class="jumbotron">
+
+	<div class="row">
+		<div class="col text-center bg-info p-5 py-5 px-2" >
 			<h2>Manage your friends</h2>
+			
 		</div>
+	</div>
+		
+	<div class="container">
 		<div class="row">
-			<div class="col-md-4">
-				<h5>Instructions</h5>
+
+			<div class="col-12 text-center my-5">
+				<h3>Instructions</h3>
 				<p>
 					Here you can send a friends request to other users so you can share lists with them!
 				</p>
 			</div>
-			<div class="col">
-				<h5>Your friends.</h5> <br />
-				<div id="myFriends">
-					@foreach (var item in Model.MyFriendsList)
-					{
-						<span>@Html.DisplayFor(modelItem => item.UserEmail)</span> <a href='javascript: void (0);' onclick="removeFriend('@item.UserEmail')">Remove</a><br />
-					}
+			<div class="col-12 col-md-6 mb-3">
+				<div class="card border-info h-100 ">
+					<div class="card-header border-info bg-info text-white">
+						Your friends.
+					</div>
+					<div class="card-body">
+						<div id="myFriends">
+							<ul style="list-style:none">
+								@foreach (var item in Model.MyFriendsList)
+								{
+									<li>@Html.DisplayFor(modelItem => item.UserEmail)<a href='javascript: void (0);' onclick="removeFriend('@item.UserEmail')"> Remove</a></li>
+								}
+							</ul>
+						</div>
+					</div>
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col">
-					<h5>Incoming friend requests.</h5> <br />
-					<div id="myFriendRequests">
-						@foreach (var item in Model.FriendRequests)
-						{
-							<span>@Html.DisplayFor(modelItem => item.SenderEmail)</span> <a href='javascript: void (0);' onclick="acceptRequest('@item.SenderEmail')">Accept</a> <a href='javascript: void (0);' onclick="declineRequest('@item.SenderEmail')">Decline</a><br />
-						}
+
+			<div class="col-12  col-md-6 mb-3">
+				<div class="card border-info h-100">
+					<div class="card-header border-info bg-info text-white">
+						Incoming friend requests.
+					</div>
+					<div class="card-body ">
+						<div id="">
+							<ul style="list-style:none">
+								@foreach (var item in Model.FriendRequests)
+								{
+									<li>@Html.DisplayFor(modelItem => item.SenderEmail) <a href='javascript: void (0);' onclick="acceptRequest('@item.SenderEmail')">Accept</a> <a href='javascript: void (0);' onclick="declineRequest('@item.SenderEmail')">Decline</a></li>
+
+								}
+							</ul>
+						</div>
 					</div>
 				</div>
-				<div class="col">
-					<h5>Send a friend request!</h5>
-					@foreach (var item in Model.UserList)
-					{
-						<span>@Html.DisplayFor(modelItem => item.Email)</span> <a href='javascript: void (0);' onclick="addFriend('@item.Email')">Add</a><br />
-					}
+			</div>
+			<div class="col-12 col-md-6 mb-3">
+				<div class="card h-100">
+					<div class="card-header">
+						Send a friend request!
+					</div>
+					<div class="card-body" id="myFriendRequests">
+						<ul style="list-style:none">
+							@foreach (var item in Model.UserList)
+							{
+								<li>@Html.DisplayFor(modelItem => item.Email) <a href='javascript: void (0);' onclick="addFriend('@item.Email')">Add</a></li>
+							}
+						</ul>
+					</div>
 				</div>
+			</div>
 
-				<div class="col">
-					<h5>People you wish to befriend.</h5> <br />
-					<div id="addedFriends"></div>
+			<div class="col-12 col-md-6 mb-3">
+				<div class="card h-100">
+					<div class="card-header">
+						People you wish to befriend.
+					</div>
+					<div class="card-body" id="addedFriends"></div>
 					<br />
 					<input type="button" value="Send friend requests" onclick="sendRequests()" class="btn btn-primary btn-sm" id="submitBtn" style="display:none" />
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+
 
 
 @section Scripts {

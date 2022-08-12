@@ -91,7 +91,6 @@ namespace ShoppinglistApp.Controllers
 
 			var arr = JsonConvert.DeserializeObject<string[]>(shoppinglist);
 			var userId = _manager.GetUserId(User);
-			;
 			foreach (string s in arr)
 			{
 				var sli = new ShoppingListItem();
@@ -105,14 +104,9 @@ namespace ShoppinglistApp.Controllers
 			sl.ListID = userId;
 			sl.UserID = User.Identity.Name;
 
-
-			//check if user has an existing list of shoppinglists, if so, add, if not, create.
-			//TODO should i remove User-class and just use IdentityUser? where to save info about existing lists etc?
-
 			if (ModelState.IsValid)
 			{
 				_context.Shoppinglists.Add(sl);
-
 				await _context.SaveChangesAsync();
 			}
 			return RedirectToAction(nameof(Index));
@@ -136,6 +130,7 @@ namespace ShoppinglistApp.Controllers
 			list.ListID = shoppinglist.ListID;
 			list.ListName = shoppinglist.ListName;
 			list.UserID = shoppinglist.UserID;
+
 			if (shoppinglist == null)
 			{
 				return NotFound();
@@ -209,8 +204,7 @@ namespace ShoppinglistApp.Controllers
 			if (curUser.Email != shoppinglist.UserID)
 			{
 				TempData["Message"] = "You are not authorized to delete this item.";
-
-				return RedirectToAction("SharedLists");
+				return RedirectToAction(nameof(SharedLists));
 			}
 
 			return View(shoppinglist);
@@ -220,7 +214,6 @@ namespace ShoppinglistApp.Controllers
 		[Authorize]
 		public async Task<IActionResult> ShareList(string listId, string listName, string targetEmail)
 		{
-			Debug.WriteLine("list name " + listName);
 			var curUser = await _userContext.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
 			try
 			{

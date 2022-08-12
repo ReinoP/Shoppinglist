@@ -29,10 +29,8 @@ namespace ShoppinglistApp.Controllers
 
 		// GET: Users
 		[Authorize]
-		public async Task<IActionResult> Index()
+		public IActionResult Index()
 		{
-			
-			
 			return View();
 		}
 
@@ -44,13 +42,11 @@ namespace ShoppinglistApp.Controllers
 			ManageFriendsView list = new ManageFriendsView();
 			var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
 
-			//var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
 			try
 			{
 				list.FriendRequests = await _userContext.FriendRequests.Where(f => f.TargetEmail == curUser.Email).ToListAsync();
 				list.UserList = await _userContext.Users.ToListAsync();
 				list.MyFriendsList =  await _userContext.FriendList.Where(f => f.FriendEmail == curUser.Email).ToListAsync();
-
 			}
 			catch(Exception e)
 			{
@@ -58,6 +54,7 @@ namespace ShoppinglistApp.Controllers
 			}
 			return View(list);
 		}
+
 		[Authorize]
 		// GET: Users/Details/5
 		public async Task<IActionResult> Details(string id)
@@ -143,7 +140,6 @@ namespace ShoppinglistApp.Controllers
 		[Authorize]
 		public async Task<IActionResult> AcceptRequest(string friendEmail)
 		{
-		
 			var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
 			var newFriend = new FriendModel();
 			newFriend.UserEmail = curUser.Email;
@@ -168,14 +164,13 @@ namespace ShoppinglistApp.Controllers
 			if(requests > 0)
 			{
 				HttpContext.Session.SetString("FriendRequests", requests.ToString());
-
 			}
 			else
 			{
 				HttpContext.Session.Remove("FriendRequests");
 			}
 
-			return Redirect("~/User/ManageFriends");
+			return RedirectToAction(nameof(ManageFriends));
 		}
 
 		[HttpPost]
@@ -191,18 +186,18 @@ namespace ShoppinglistApp.Controllers
 			var requests = Int32.Parse(HttpContext.Session.GetString("FriendRequests"));
 			if (requests > 0)
 			{
-				requests = requests - 1;
+				requests -= 1;
 			}
 			if (requests > 0)
 			{
 				HttpContext.Session.SetString("FriendRequests", requests.ToString());
-
 			}
 			else
 			{
 				HttpContext.Session.Remove("FriendRequests");
 			}
-			return Redirect("~/User/ManageFriends");
+			return RedirectToAction(nameof(ManageFriends));
+
 		}
 
 		// GET: Users/Create
@@ -298,9 +293,13 @@ namespace ShoppinglistApp.Controllers
 		[Authorize]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			var user = await _userContext.Users.FindAsync(id);
-			_userContext.Users.Remove(user);
-			await _userContext.SaveChangesAsync();
+			var curUser = await _userContext.Users.FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
+			//Check if user has authorization to delete other users
+			//TODO implement roles?
+
+			//var user = await _userContext.Users.FindAsync(id);
+			//_userContext.Users.Remove(user);
+			//await _userContext.SaveChangesAsync();
 			return RedirectToAction(nameof(Index));
 		}
 
