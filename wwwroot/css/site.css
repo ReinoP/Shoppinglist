@@ -12,6 +12,32 @@ a {
   color: #0366d6;
 }
 
+.main-div {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #00A5E5;
+}
+
+.quarternary-text {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #E6F4F1;
+}
+
+.primary-bg-color {
+  background-color: #47CBF5;
+}
+
+.secondary-bg-color {
+  background-color: #00A5E5;
+}
+
+.tertiary-bg-color {
+  background-color: #E4FDFF;
+}
+
+.quarternary-bg-color {
+  background-color: #E6F4F1;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;

@@ -11,7 +11,7 @@
 
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  class="tertiary-bg-color">
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,9 +22,9 @@
 	<link rel="stylesheet" href="~/css/site.css" />
 	@*<link rel="stylesheet" href="~/css/layout.css">*@
 </head>
-<body class="bg-light ">
-	<header>
-		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow ">
+<body class="">
+	<header class="secondary-bg-color">
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow quarternary-text ">
 			@*<div class="d-flex align-items-center justify-content-center">*@
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 								aria-expanded="false" aria-label="Toggle navigation">
@@ -34,24 +34,24 @@
 					<ul class="navbar-nav flex-grow-1 justify-content-center">
 						<li class="nav-item">
 
-							<a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+							<a class="nav-link quarternary-text" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
 						</li>
 
 						@if (SignInManager.IsSignedIn(User))
 						{
 							<li class="nav-item">
-								<a class="nav-link text-white" asp-area="" asp-controller="Shoppinglist" asp-action="Index">View your lists</a>
+								<a class="nav-link quarternary-text" asp-area="" asp-controller="Shoppinglist" asp-action="Index">View your lists</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link text-white" asp-area="" asp-controller="Shoppinglist" asp-action="Create">Create list</a>
+								<a class="nav-link quarternary-text" asp-area="" asp-controller="Shoppinglist" asp-action="Create">Create list</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link text-white" asp-area="" asp-controller="Shoppinglist" asp-action="SharedLists">View shared lists</a>
+								<a class="nav-link quarternary-text" asp-area="" asp-controller="Shoppinglist" asp-action="SharedLists">View shared lists</a>
 							</li>
 							<li class="nav-item">
 								@if (friendRequests == 0)
 								{
-									<a class="nav-link text-white" asp-area="" asp-controller="User" asp-action="ManageFriends">Manage friends</a>
+									<a class="nav-link quarternary-text" asp-area="" asp-controller="User" asp-action="ManageFriends">Manage friends</a>
 								}
 								@if (friendRequests != 0)
 								{
@@ -68,14 +68,14 @@
 			@*</div>*@
 		</nav>
 	</header>
-	<div class="container-fluid">
+	<div class="container-fluid tertiary-bg-color main-div">
 		<main role="main" class="pb-3">
 			@RenderBody()
 		</main>
 	</div>
 
-	<footer class="border-top footer text-muted bg-dark ">
-		<div class="container-fluid text-white">
+	<footer class="border-top footer text-muted secondary-bg-color ">
+		<div class="container-fluid quarternary-text">
 			&copy; 2022 - Shoppinglist by ReinoP
 		</div>
 	</footer>

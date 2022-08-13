@@ -4,7 +4,7 @@
 }
 
 	<div class="row">
-		<div class="col text-center bg-info p-5 py-5 px-2" >
+		<div class="col text-center p-5 py-5 px-2" >
 			<h2>Manage your friends</h2>
 			
 		</div>
@@ -21,10 +21,10 @@
 			</div>
 			<div class="col-12 col-md-6 mb-3">
 				<div class="card border-info h-100 ">
-					<div class="card-header border-info bg-info text-white">
+					<div class="card-header border-info secondary-bg-color">
 						Your friends.
 					</div>
-					<div class="card-body">
+					<div class="card-body quarternary-bg-color">
 						<div id="myFriends">
 							<ul style="list-style:none">
 								@foreach (var item in Model.MyFriendsList)
@@ -40,10 +40,10 @@
 
 			<div class="col-12  col-md-6 mb-3">
 				<div class="card border-info h-100">
-					<div class="card-header border-info bg-info text-white">
+					<div class="card-header border-info secondary-bg-color quarternary-text">
 						Incoming friend requests.
 					</div>
-					<div class="card-body ">
+					<div class="card-body quarternary-bg-color">
 						<div id="">
 							<ul style="list-style:none">
 								@foreach (var item in Model.FriendRequests)
@@ -58,10 +58,10 @@
 			</div>
 			<div class="col-12 col-md-6 mb-3">
 				<div class="card h-100">
-					<div class="card-header">
+					<div class="card-header secondary-bg-color quarternary-text">
 						Send a friend request!
 					</div>
-					<div class="card-body" id="myFriendRequests">
+					<div class="card-body quarternary-bg-color" id="myFriendRequests">
 						<ul style="list-style:none">
 							@foreach (var item in Model.UserList)
 							{
@@ -74,11 +74,10 @@
 
 			<div class="col-12 col-md-6 mb-3">
 				<div class="card h-100">
-					<div class="card-header">
+					<div class="card-header secondary-bg-color quarternary-text">
 						People you wish to befriend.
 					</div>
-					<div class="card-body" id="addedFriends"></div>
-					<br />
+					<div class="card-body quarternary-bg-color" id="addedFriends"></div>
 					<input type="button" value="Send friend requests" onclick="sendRequests()" class="btn btn-primary btn-sm" id="submitBtn" style="display:none" />
 				</div>
 			</div>
