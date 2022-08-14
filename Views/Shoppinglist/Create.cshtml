@@ -56,11 +56,9 @@
 		function addFunction() {
 			var item = document.getElementById("addMe").value;
 			itemArr.push(item);
-
 			$("#addedItems").append(item + "<a href='javascript: void (0);' onclick='removeItem(" + counter + ");''> remove </a>" + "<br>");
 			counter++;
-			console.table(itemArr);
-
+			document.getElementById("addMe").value = "";
 		}
 		function removeItem(c) {
 			console.log("remove index " + c);

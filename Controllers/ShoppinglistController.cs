@@ -37,7 +37,7 @@ namespace ShoppinglistApp.Controllers
 			var curUser = await _userContext.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
 
 			var userId = _manager.GetUserId(User);
-			var list = await _context.Shoppinglists.Where(u => u.ListID == userId).ToListAsync();
+			var list = await _context.Shoppinglists.Where(l => l.UserID == curUser.Email).ToListAsync();
 
 			var friendsList = await _userContext.FriendList.Where(f => f.FriendEmail == curUser.Email).ToListAsync();
 
@@ -101,7 +101,7 @@ namespace ShoppinglistApp.Controllers
 
 			var sl = new Shoppinglist();
 			sl.ListName = listName;
-			sl.ListID = userId;
+			sl.ListID = Guid.NewGuid().ToString();
 			sl.UserID = User.Identity.Name;
 
 			if (ModelState.IsValid)

@@ -20,7 +20,7 @@
 				<span asp-validation-for="ListName" class="text-danger"></span>
 			</div>
 			<div class="form-group" id="listItems">
-				<span>Items on the shoppinglist</span>
+				<span>Edit/remove items on the shoppinglist.</span>
 
 			</div>
 			<span class="control-label">Add item to list</span> <br />
@@ -56,6 +56,9 @@
 
 		$(document).ready(function () {
 			itemArr.forEach((i) => {
+				if (counter == 0) {
+					$("#listItems").append('<br>');
+				}
 				$("#listItems").append('<input type="text" id="listItem" value=' + i + ' />' + "<a href='javascript: void (0);' onclick='removeItem(" + counter + ");''> remove </a>" + "<br>");
 				counter++;
 			});
