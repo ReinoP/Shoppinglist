@@ -1,6 +1,7 @@
 # Shoppinglist
 App for creating,saving and sharing shoppinglists using .NET core MVC
 
-Getting back to basics with .NET and C#, havent touched those in a long time.
+Getting back to basics with .NET and C#, haven't touched those in a long time.
 
-Obviously still under construction and far from using best practices since my main goal is just to get the basics down :)
+Basic functionalities are there: Register/login (Entity framework) (no confirmation email system for ease of use), List functionalities (CRUD), Friend system for sharing your lists.
+Might (or might not) add something to this at a later point, or start another project.
